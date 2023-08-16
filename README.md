@@ -1,3 +1,4 @@
+![Openride logo](/openride-logo-black.png)
 # Openride
 Help us shape the future of ridesharing by contributing to the world's first open-source platform
 
