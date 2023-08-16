@@ -66,6 +66,6 @@ OpenRide invites developers, designers, rideshare drivers, and enthusiasts to jo
 - Ping me on on twitter
 - @openridenet
 
-## Current Job Opens
+## Current Job Options/Openings
 - CTO / Co founder
 https://www.linkedin.com/jobs/view/3688490543
