@@ -63,7 +63,7 @@ OpenRide invites developers, designers, rideshare drivers, and enthusiasts to jo
 
 - email us : [hello@rideall.com.au](mailto:hello@rideall.com.au)
 
-- [Ping me on on twitter @openridenet](www.x.com/openridenet)
+- [Ping me on on twitter @openridenet](https://www.x.com/openridenet)
 
 ## Current Job Options/Openings
 - [CTO / Co founder](https://www.linkedin.com/jobs/view/3688490543)
