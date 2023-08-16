@@ -4,7 +4,7 @@ Help us shape the future of ridesharing by contributing to the world's first ope
 
 ## What is openride
 
-OOpenRide aims to democratize the ridesharing industry by introducing the world's first open-source ridesharing platform. Rooted in transparency, community collaboration, and user empowerment, our mission is to offer a sustainable and community-driven alternative to traditional ridesharing services.
+OpenRide aims to democratize the ridesharing industry by introducing the world's first open-source ridesharing platform. Rooted in transparency, community collaboration, and user empowerment, our mission is to offer a sustainable and community-driven alternative to traditional ridesharing services.
 
 ## Key Features:
 
