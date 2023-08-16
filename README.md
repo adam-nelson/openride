@@ -61,5 +61,6 @@ OpenRide invites developers, designers, rideshare drivers, and enthusiasts to jo
 
 # Apply or express interest
 
-email hello@rideall.com.au
-Ping me on (X.com/nelso_adam)
+- email hello@rideall.com.au
+
+- Ping me on www.X.com/nelso_adam
