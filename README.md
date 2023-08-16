@@ -58,3 +58,9 @@ OpenRide invites developers, designers, rideshare drivers, and enthusiasts to jo
 16. Customer Support: To address user issues, complaints, and provide guidance.
 
 17. Financial Expert: To manage costs, revenue, and ensure the project remains financially viable.
+
+#
+
+how to apply
+
+email (mailto:hello@rideall.com.au) 
