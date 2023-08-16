@@ -61,4 +61,4 @@ OpenRide invites developers, designers, rideshare drivers, and enthusiasts to jo
 
 # how to apply or express interest
 
-email mailto:hello@rideall.com.au
+email hello@rideall.com.au
