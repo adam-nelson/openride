@@ -59,6 +59,6 @@ OpenRide invites developers, designers, rideshare drivers, and enthusiasts to jo
 
 17. Financial Expert: To manage costs, revenue, and ensure the project remains financially viable.
 
-# how to apply or express interest
+# Apply or express interest
 
 email hello@rideall.com.au
