@@ -51,6 +51,18 @@ enable_signup = true
 enable_confirmations = true
 template = "Your OpenRide code is {{ .Code }}"
 
+# Phone login requires *some* provider section with `enabled = true`. For local
+# dev we declare a dummy Twilio block; `[auth.sms.test_otp]` below intercepts
+# before any real Twilio call, so the credentials never need to be valid.
+#
+# For staging / prod: swap to `auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"`
+# and set the env var to a real Twilio auth token before booting.
+[auth.sms.twilio]
+enabled = true
+account_sid = "ACdev_local_only"
+message_service_sid = "MGdev_local_only"
+auth_token = "dev_local_only_unused"
+
 # In local dev, set a fixed OTP so we don't need a real Twilio account.
 [auth.sms.test_otp]
 "+61400000010" = "123456"
