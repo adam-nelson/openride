@@ -62,9 +62,6 @@ template = "Your OpenRide code is {{ .Code }}"
 [realtime]
 enabled = true
 
-[functions]
-verify_jwt = true
-
 [functions.fare-estimate]
 verify_jwt = true
 
