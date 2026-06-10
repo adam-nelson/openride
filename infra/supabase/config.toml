@@ -1,0 +1,84 @@
+# OpenRide local Supabase config. Edit and re-run `supabase start` to apply.
+
+project_id = "openride"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+[inbucket]
+enabled = true
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = [
+  "http://127.0.0.1:3000",
+  "openride-rider://",
+  "openride-driver://",
+]
+jwt_expiry = 3600
+enable_signup = true
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+[auth.sms]
+enable_signup = true
+enable_confirmations = true
+template = "Your OpenRide code is {{ .Code }}"
+
+# In local dev, set a fixed OTP so we don't need a real Twilio account.
+[auth.sms.test_otp]
+"+61400000010" = "123456"
+"+61400000011" = "123456"
+"+61400000012" = "123456"
+"+61400000020" = "123456"
+"+61400000021" = "123456"
+
+[realtime]
+enabled = true
+
+[functions]
+verify_jwt = true
+
+[functions.fare-estimate]
+verify_jwt = true
+
+[functions.bookings]
+verify_jwt = true
+
+[functions.driver-online]
+verify_jwt = true
+
+[functions.trips-accept-offer]
+verify_jwt = true
+
+[functions.dispatch]
+verify_jwt = false
+
+[functions.stripe-webhook]
+verify_jwt = false

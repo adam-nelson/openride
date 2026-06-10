@@ -1,0 +1,29 @@
+{
+  "name": "@openride/config",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "files": [
+    "eslint",
+    "tsconfig",
+    "prettier"
+  ],
+  "exports": {
+    "./eslint/base": "./eslint/base.cjs",
+    "./eslint/next": "./eslint/next.cjs",
+    "./eslint/expo": "./eslint/expo.cjs",
+    "./tsconfig/base": "./tsconfig/base.json",
+    "./tsconfig/next": "./tsconfig/next.json",
+    "./tsconfig/expo": "./tsconfig/expo.json",
+    "./tsconfig/library": "./tsconfig/library.json"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2"
+  }
+}

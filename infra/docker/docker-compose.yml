@@ -1,0 +1,28 @@
+# Supporting services for local dev. Postgres + Auth + Storage + Realtime are
+# managed by the Supabase CLI (`pnpm db:start`); this file boots the extras
+# Supabase doesn't manage: Valhalla routing and MailHog for catching test emails.
+
+services:
+  valhalla:
+    image: ghcr.io/gis-ops/docker-valhalla/valhalla:latest
+    container_name: openride-valhalla
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    volumes:
+      - valhalla-data:/custom_files
+    environment:
+      tile_urls: "https://download.geofabrik.de/australia-oceania/australia/new-south-wales-latest.osm.pbf"
+      server_threads: 2
+      use_tiles_ignore_pbf: "False"
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: openride-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # web UI
+
+volumes:
+  valhalla-data:

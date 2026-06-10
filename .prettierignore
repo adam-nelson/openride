@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+.next
+.turbo
+.expo
+coverage
+*.lock
+pnpm-lock.yaml
+packages/db/src/generated.ts

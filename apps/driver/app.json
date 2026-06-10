@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "OpenRide Driver",
+    "slug": "openride-driver",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "openride-driver",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a4ec9"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "tv.openride.driver",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We use your location while you are online to dispatch trips and let riders see you on the map.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Background location is used while you are on a trip so your rider can track you.",
+        "UIBackgroundModes": ["location", "fetch"],
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0a4ec9"
+      },
+      "package": "tv.openride.driver",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE"
+      ]
+    },
+    "web": { "favicon": "./assets/favicon.png" },
+    "plugins": ["expo-location", "expo-secure-store"],
+    "extra": {
+      "supabaseUrl": "$SUPABASE_URL",
+      "supabaseAnonKey": "$SUPABASE_ANON_KEY"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "OpenRide Rider",
+    "slug": "openride-rider",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "openride-rider",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1f6feb"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "tv.openride.rider",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We use your location to find drivers near you and show pickup and drop-off points.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Background location is only used while a trip is in progress so you can see your driver.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1f6feb"
+      },
+      "package": "tv.openride.rider",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+    },
+    "web": { "favicon": "./assets/favicon.png" },
+    "plugins": ["expo-location", "expo-secure-store"],
+    "extra": {
+      "supabaseUrl": "$SUPABASE_URL",
+      "supabaseAnonKey": "$SUPABASE_ANON_KEY"
+    }
+  }
+}

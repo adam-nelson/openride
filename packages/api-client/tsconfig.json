@@ -1,0 +1,5 @@
+{
+  "extends": "@openride/config/tsconfig/library",
+  "compilerOptions": { "outDir": "dist", "rootDir": "src", "noEmit": true },
+  "include": ["src/**/*"]
+}

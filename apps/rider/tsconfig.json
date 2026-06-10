@@ -1,0 +1,9 @@
+{
+  "extends": "@openride/config/tsconfig/expo",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["index.ts", "src/**/*", "App.tsx"],
+  "exclude": ["node_modules", ".expo", "dist"]
+}

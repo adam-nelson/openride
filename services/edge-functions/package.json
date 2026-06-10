@@ -1,0 +1,11 @@
+{
+  "name": "@openride/edge-functions",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "description": "Supabase Edge Functions (Deno).",
+  "scripts": {
+    "lint": "echo 'edge functions are Deno — run deno lint via supabase functions serve'",
+    "typecheck": "echo 'edge functions are Deno — type-checked at deploy by supabase'"
+  }
+}
