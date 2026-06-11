@@ -1,7 +1,7 @@
 import { getSupabaseServer } from '@/lib/supabase-server';
 
 export default async function VehiclesPage() {
-  const supabase = getSupabaseServer();
+  const supabase = await getSupabaseServer();
   const { data: vehicles, error } = await supabase
     .from('vehicles')
     .select('id, rego, make, model, year, vehicle_type, status')

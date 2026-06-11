@@ -3,27 +3,29 @@ import { cookies } from 'next/headers';
 
 import type { Database } from '@openride/db/types';
 
-export function getSupabaseServer() {
-  const cookieStore = cookies();
-  const url = process.env.SUPABASE_URL;
-  const anonKey = process.env.SUPABASE_ANON_KEY;
-  if (!url || !anonKey) throw new Error('SUPABASE_URL / SUPABASE_ANON_KEY are required');
+import { getSupabaseEnv } from './env';
+
+/**
+ * Server-side Supabase client bound to the request's cookies.
+ *
+ * Async because Next 15+ made `cookies()` return a Promise. Uses the
+ * getAll/setAll cookie interface required by @supabase/ssr >= 0.6.
+ */
+export async function getSupabaseServer() {
+  const cookieStore = await cookies();
+  const { url, anonKey } = getSupabaseEnv();
 
   return createServerClient<Database>(url, anonKey, {
     cookies: {
-      get: (name) => cookieStore.get(name)?.value,
-      set: (name, value, options) => {
+      getAll: () => cookieStore.getAll(),
+      setAll: (cookiesToSet) => {
         try {
-          cookieStore.set({ name, value, ...options });
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
         } catch {
-          // ignore — called from a Server Component during a render
-        }
-      },
-      remove: (name, options) => {
-        try {
-          cookieStore.set({ name, value: '', ...options });
-        } catch {
-          // ignore
+          // Called from a Server Component during render — middleware/route
+          // handlers refresh the session instead. Safe to ignore here.
         }
       },
     },

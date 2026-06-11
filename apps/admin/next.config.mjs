@@ -7,7 +7,6 @@ const nextConfig = {
     '@openride/realtime',
     '@openride/ui',
   ],
-  experimental: { instrumentationHook: false },
 };
 
 export default nextConfig;

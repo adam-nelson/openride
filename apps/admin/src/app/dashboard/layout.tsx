@@ -12,7 +12,7 @@ const nav = [
 ];
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const supabase = getSupabaseServer();
+  const supabase = await getSupabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 

@@ -17,6 +17,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "db:start": "supabase start --workdir infra",
+    "db:status": "supabase status --workdir infra",
     "db:stop": "supabase stop --workdir infra",
     "db:reset": "supabase db reset --workdir infra",
     "db:diff": "supabase db diff --workdir infra",
@@ -25,11 +26,17 @@
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "@types/node": "^20.14.0",
-    "prettier": "^3.3.3",
-    "supabase": "^1.200.3",
-    "turbo": "^2.1.0",
-    "tsx": "^4.19.0",
-    "typescript": "~5.4.5"
+    "@types/node": "^20.19.42",
+    "prettier": "^3.8.4",
+    "supabase": "2.105.0",
+    "tsx": "^4.22.4",
+    "turbo": "^2.9.17",
+    "typescript": "~5.9.2"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.108.1",
+    "next": "16.2.9",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   }
 }

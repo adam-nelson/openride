@@ -41,6 +41,12 @@ pnpm-debug.log*
 infra/supabase/.branches/
 infra/supabase/.temp/
 supabase/.branches/
+# Stray CLI scaffold if `supabase` is ever run from the repo root without --workdir.
+# The real project config lives in infra/supabase.
+/supabase/
+
+# This is a pnpm workspace — never commit an npm lockfile.
+package-lock.json
 
 # Editor
 .vscode/*

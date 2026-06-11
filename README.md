@@ -25,7 +25,7 @@ git clone https://github.com/your-org/openride.git
 cd openride
 
 # Install
-pnpm install
+     pnpm install
 
 # Copy env template
 cp .env.example .env.local
@@ -44,11 +44,13 @@ pnpm dev
 ```
 
 Then:
+
 - Admin portal: http://localhost:3000
 - Rider app: scan QR from `apps/rider` (Expo Go) or open `i`/`a`
 - Driver app: scan QR from `apps/driver`
 
 Demo accounts (after `make reset`):
+
 - Admin: `admin@demo.openride` / `demo-password-change-me`
 - Rider, Driver: phone numbers in `packages/db/seeds/demo.sql`
 
@@ -73,20 +75,20 @@ OpenRide stores the **records** an operator needs to demonstrate compliance: dri
 
 ## Stack
 
-| Layer | Choice |
-|---|---|
-| Mobile | Expo React Native, TypeScript |
-| Web admin | Next.js 14 App Router, Tailwind, shadcn/ui |
-| Backend | Supabase (Postgres 15 + PostGIS, Auth, Realtime, Storage, Edge Functions/Deno) |
-| Realtime | Supabase Realtime (broadcast + postgres_changes) |
-| Maps | MapLibre GL Native + MapLibre GL JS |
-| Tiles | MapTiler (dev) / Protomaps (self-host prod) |
-| Routing | Valhalla (Docker) |
-| Payments | Stripe Connect Express |
-| SMS / OTP | Twilio (via Supabase Auth) |
-| Push | Expo Push (FCM / APNs) |
-| Email | Resend |
-| Tests | Vitest, Playwright, Maestro |
+| Layer     | Choice                                                                         |
+| --------- | ------------------------------------------------------------------------------ |
+| Mobile    | Expo SDK 56 (React Native 0.86, React 19), TypeScript                          |
+| Web admin | Next.js 16 App Router, React 19, Tailwind                                      |
+| Backend   | Supabase (Postgres 15 + PostGIS, Auth, Realtime, Storage, Edge Functions/Deno) |
+| Realtime  | Supabase Realtime (broadcast + postgres_changes)                               |
+| Maps      | MapLibre GL Native + MapLibre GL JS                                            |
+| Tiles     | MapTiler (dev) / Protomaps (self-host prod)                                    |
+| Routing   | Valhalla (Docker)                                                              |
+| Payments  | Stripe Connect Express                                                         |
+| SMS / OTP | Twilio (via Supabase Auth)                                                     |
+| Push      | Expo Push (FCM / APNs)                                                         |
+| Email     | Resend                                                                         |
+| Tests     | Vitest, Playwright, Maestro                                                    |
 
 ## Repository layout
 

@@ -4,7 +4,10 @@
  * the predicates change here, not in 50 call-sites.
  */
 
+import type { Database } from './generated';
 import type { OpenrideClient } from './index';
+
+type VehicleType = Database['public']['Enums']['vehicle_type'];
 
 export async function getUserById(client: OpenrideClient, userId: string) {
   return client.from('users').select('*').eq('id', userId).maybeSingle();
@@ -50,7 +53,7 @@ export async function getPendingOfferForDriver(client: OpenrideClient, driverId:
     .maybeSingle();
 }
 
-export async function getActiveFareRule(client: OpenrideClient, vehicleType: string) {
+export async function getActiveFareRule(client: OpenrideClient, vehicleType: VehicleType) {
   return client
     .from('fare_rules')
     .select('*')

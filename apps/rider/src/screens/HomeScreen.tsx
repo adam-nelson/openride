@@ -1,7 +1,7 @@
 import { colors, spacing, typography } from '@openride/ui';
 import { StyleSheet, Text, View } from 'react-native';
 
-export function HomeScreen(): JSX.Element {
+export function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Where to?</Text>

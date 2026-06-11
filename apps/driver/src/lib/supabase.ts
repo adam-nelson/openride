@@ -1,12 +1,17 @@
 import { createBrowserClient, type OpenrideClient } from '@openride/db';
-import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 
-const url = Constants.expoConfig?.extra?.supabaseUrl as string | undefined;
-const anonKey = Constants.expoConfig?.extra?.supabaseAnonKey as string | undefined;
+// Expo inlines EXPO_PUBLIC_* env vars into the bundle at build time.
+// Set them in apps/driver/.env.local (see .env.example), then restart
+// the bundler with `expo start --clear` so the new values are picked up.
+const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
+const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!url || !anonKey) {
-  throw new Error('Missing supabaseUrl / supabaseAnonKey in app.json extra.');
+  throw new Error(
+    'Missing EXPO_PUBLIC_SUPABASE_URL / EXPO_PUBLIC_SUPABASE_ANON_KEY. ' +
+      'Copy apps/driver/.env.example to .env.local and restart with `expo start --clear`.',
+  );
 }
 
 const secureStorage = {

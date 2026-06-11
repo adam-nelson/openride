@@ -1,7 +1,7 @@
 import { colors, spacing, typography } from '@openride/ui';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export function OfferScreen(): JSX.Element {
+export function OfferScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.eta}>4 min</Text>

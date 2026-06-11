@@ -4,7 +4,7 @@ import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-nativ
 
 import { sendOtp, verifyOtp } from '../lib/auth';
 
-export function PhoneAuthScreen(): JSX.Element {
+export function PhoneAuthScreen() {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [stage, setStage] = useState<'phone' | 'code'>('phone');

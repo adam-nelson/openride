@@ -1,7 +1,7 @@
 import { getSupabaseServer } from '@/lib/supabase-server';
 
 export default async function DashboardPage() {
-  const supabase = getSupabaseServer();
+  const supabase = await getSupabaseServer();
 
   const [{ count: driverCount }, { count: vehicleCount }, { count: tripCount }] = await Promise.all([
     supabase.from('driver_profiles').select('*', { count: 'exact', head: true }),

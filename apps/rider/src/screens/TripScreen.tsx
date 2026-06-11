@@ -6,7 +6,7 @@ import type { RootStackParamList } from '../../App';
 
 type Props = { route: RouteProp<RootStackParamList, 'Trip'> };
 
-export function TripScreen({ route }: Props): JSX.Element {
+export function TripScreen({ route }: Props) {
   const { tripId } = route.params;
 
   return (

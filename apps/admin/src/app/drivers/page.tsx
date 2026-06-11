@@ -1,7 +1,7 @@
 import { getSupabaseServer } from '@/lib/supabase-server';
 
 export default async function DriversPage() {
-  const supabase = getSupabaseServer();
+  const supabase = await getSupabaseServer();
   const { data: drivers, error } = await supabase
     .from('driver_profiles')
     .select('user_id, status, licence_number, authority_expiry, users(display_name, phone)')

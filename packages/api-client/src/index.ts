@@ -81,8 +81,10 @@ export class OpenrideApi {
     return this.invoke(`trips-${event}`, { trip_id: tripId });
   }
 
-  private async invoke<T>(fnName: string, body: unknown): Promise<T> {
-    const { data, error } = await this.client.functions.invoke<T>(fnName, { body });
+  private async invoke<T>(fnName: string, body: object): Promise<T> {
+    const { data, error } = await this.client.functions.invoke<T>(fnName, {
+      body: body as Record<string, unknown>,
+    });
     if (error) throw error;
     if (data === null) throw new Error(`Edge function ${fnName} returned no body`);
     return data;

@@ -153,6 +153,28 @@ begin
      '{"role":"rider","display_name":"Roman Rider"}'::jsonb,
      now(), now())
   on conflict (id) do nothing;
+
+  -- GoTrue (the auth server) scans these columns into Go strings on login and
+  -- errors with "Database error querying schema" if any are NULL. Inserting
+  -- auth.users rows directly via SQL leaves them NULL, so normalise to ''.
+  update auth.users set
+    confirmation_token         = coalesce(confirmation_token, ''),
+    recovery_token             = coalesce(recovery_token, ''),
+    email_change               = coalesce(email_change, ''),
+    email_change_token_new     = coalesce(email_change_token_new, ''),
+    email_change_token_current = coalesce(email_change_token_current, ''),
+    phone_change               = coalesce(phone_change, ''),
+    phone_change_token         = coalesce(phone_change_token, ''),
+    reauthentication_token     = coalesce(reauthentication_token, '')
+  where id in (
+    '22222222-2222-2222-2222-222222222201',
+    '22222222-2222-2222-2222-222222222202',
+    '22222222-2222-2222-2222-222222222210',
+    '22222222-2222-2222-2222-222222222211',
+    '22222222-2222-2222-2222-222222222212',
+    '22222222-2222-2222-2222-222222222220',
+    '22222222-2222-2222-2222-222222222221'
+  );
 end $$;
 
 -- The handle_new_auth_user trigger has already created the public.users + profile rows.

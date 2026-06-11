@@ -2,7 +2,7 @@ import { colors, spacing, typography } from '@openride/ui';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export function HomeScreen(): JSX.Element {
+export function HomeScreen() {
   const [online, setOnline] = useState(false);
 
   return (
