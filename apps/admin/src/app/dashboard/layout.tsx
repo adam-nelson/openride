@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
+import { SignOutButton } from '@/components/SignOutButton';
 import { getSupabaseServer } from '@/lib/supabase-server';
 
 const nav = [
@@ -18,7 +19,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="min-h-screen flex">
-      <aside className="w-56 bg-white border-r p-4">
+      <aside className="w-56 bg-white border-r p-4 flex flex-col">
         <div className="text-lg font-semibold text-brand mb-6">OpenRide</div>
         <nav className="flex flex-col gap-1">
           {nav.map((n) => (
@@ -31,6 +32,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
             </Link>
           ))}
         </nav>
+        <div className="mt-auto pt-4 border-t">
+          <div className="text-xs text-gray-500 truncate mb-1" title={user.email ?? ''}>
+            {user.email}
+          </div>
+          <SignOutButton />
+        </div>
       </aside>
       <main className="flex-1 p-8">{children}</main>
     </div>

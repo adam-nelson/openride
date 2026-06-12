@@ -371,8 +371,6 @@ importers:
         specifier: ~5.9.2
         version: 5.9.3
 
-  services/edge-functions: {}
-
 packages:
 
   '@alloc/quick-lru@5.2.0':

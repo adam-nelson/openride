@@ -1,5 +1,6 @@
 import { createBrowserClient, type OpenrideClient } from '@openride/db';
-import * as SecureStore from 'expo-secure-store';
+
+import { secureStorage } from './secure-storage';
 
 // Expo inlines EXPO_PUBLIC_* env vars into the bundle at build time.
 // Set them in apps/rider/.env.local (see .env.example), then restart
@@ -14,14 +15,6 @@ if (!url || !anonKey) {
   );
 }
 
-// SecureStore-backed auth storage so the rider stays signed in across launches.
-const secureStorage = {
-  getItem: (key: string) => SecureStore.getItemAsync(key),
-  setItem: (key: string, value: string) => SecureStore.setItemAsync(key, value),
-  removeItem: (key: string) => SecureStore.deleteItemAsync(key),
-};
-
-export const supabase: OpenrideClient = createBrowserClient({ url, anonKey });
-
-// @ts-expect-error -- override storage at runtime; Supabase JS supports it.
-supabase.auth.storage = secureStorage;
+// SecureStore-backed session storage so the rider stays signed in across
+// launches. Passed at construction — GoTrue reads it when the client is built.
+export const supabase: OpenrideClient = createBrowserClient({ url, anonKey, storage: secureStorage });

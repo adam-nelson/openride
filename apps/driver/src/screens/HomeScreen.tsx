@@ -1,22 +1,37 @@
 import { colors, spacing, typography } from '@openride/ui';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
-export function HomeScreen() {
+import { signOut } from '../lib/auth';
+
+export function HomeScreen({ displayName }: { displayName?: string | null }) {
   const [online, setOnline] = useState(false);
+
+  async function onSignOut(): Promise<void> {
+    try {
+      await signOut();
+    } catch (e) {
+      Alert.alert('Could not sign out', (e as Error).message);
+    }
+  }
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.hi}>{displayName ?? 'Driver'}</Text>
+        <Pressable onPress={onSignOut} hitSlop={8}>
+          <Text style={styles.signOut}>Sign out</Text>
+        </Pressable>
+      </View>
+
       <View style={[styles.statusPill, online ? styles.onlinePill : styles.offlinePill]}>
         <Text style={styles.statusText}>{online ? 'Online' : 'Offline'}</Text>
       </View>
 
-      <Text style={styles.headline}>
-        {online ? 'Waiting for an offer…' : 'You are offline'}
-      </Text>
+      <Text style={styles.headline}>{online ? 'Waiting for an offer…' : 'You are offline'}</Text>
       <Text style={styles.muted}>
-        Going online will share your location and make you available for offers. Sprint 3 wires the
-        actual go-online call to the backend.
+        Going online will share your location and make you available for offers. Phase 3 wires the
+        go-online call to the backend.
       </Text>
 
       <Pressable
@@ -31,6 +46,14 @@ export function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: spacing.xl, backgroundColor: colors.surface },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.xl,
+  },
+  hi: { fontSize: typography.size.lg, fontWeight: '600' },
+  signOut: { color: colors.danger, fontSize: typography.size.sm, fontWeight: '600' },
   statusPill: {
     alignSelf: 'flex-start',
     paddingVertical: spacing.xs,
