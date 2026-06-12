@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
 import { HttpError, audit, requireCaller } from '../_shared/auth.ts';
+import { computeFareCents, estimateDurationS, haversineM } from '../_shared/fare.ts';
 
 interface Body {
   type: 'now' | 'scheduled';
@@ -33,6 +34,18 @@ Deno.serve(async (req: Request) => {
     const pickup = `SRID=4326;POINT(${body.pickup.lng} ${body.pickup.lat})`;
     const dropoff = `SRID=4326;POINT(${body.dropoff.lng} ${body.dropoff.lat})`;
 
+    // Lock an estimated fare onto the trip so it carries a price through to
+    // completion (final fare is reconciled at trip complete).
+    const distance_m = haversineM(body.pickup, body.dropoff);
+    const duration_s = estimateDurationS(distance_m);
+    const { data: rule } = await ctx.serviceClient
+      .from('fare_rules')
+      .select('*')
+      .eq('vehicle_type', body.vehicle_type)
+      .eq('is_active', true)
+      .maybeSingle();
+    const estimated_fare_cents = rule ? computeFareCents(rule as any, distance_m, duration_s) : null;
+
     const { data: booking, error: bookingErr } = await ctx.serviceClient
       .from('bookings')
       .insert({
@@ -64,6 +77,9 @@ Deno.serve(async (req: Request) => {
         dropoff_point: dropoff,
         pickup_address: body.pickup_label,
         dropoff_address: body.dropoff_label,
+        estimated_fare_cents,
+        distance_m,
+        duration_s,
       })
       .select('*')
       .single();

@@ -83,7 +83,16 @@ verify_jwt = true
 [functions.driver-online]
 verify_jwt = true
 
+[functions.driver-offline]
+verify_jwt = true
+
 [functions.trips-accept-offer]
+verify_jwt = true
+
+[functions.trips-decline-offer]
+verify_jwt = true
+
+[functions.trips-transition]
 verify_jwt = true
 
 [functions.dispatch]

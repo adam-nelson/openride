@@ -76,9 +76,10 @@ export class OpenrideApi {
 
   async tripEvent(
     tripId: string,
-    event: 'en-route' | 'arrived' | 'start' | 'complete',
+    event: 'en-route' | 'arrived' | 'start' | 'complete' | 'cancel',
+    reason?: string,
   ): Promise<{ ok: true }> {
-    return this.invoke(`trips-${event}`, { trip_id: tripId });
+    return this.invoke('trips-transition', { trip_id: tripId, event, reason });
   }
 
   private async invoke<T>(fnName: string, body: object): Promise<T> {
