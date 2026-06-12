@@ -74,6 +74,14 @@ export class OpenrideApi {
     return this.invoke('trips-decline-offer', { trip_id: tripId, reason });
   }
 
+  async manualAssign(tripId: string, driverId: string, reason: string): Promise<{ ok: true }> {
+    return this.invoke('dispatch-manual-assign', {
+      trip_id: tripId,
+      driver_id: driverId,
+      reason,
+    });
+  }
+
   async tripEvent(
     tripId: string,
     event: 'en-route' | 'arrived' | 'start' | 'complete' | 'cancel',

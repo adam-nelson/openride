@@ -1,5 +1,5 @@
 import { colors, formatDistance, formatDurationS, formatMoney, spacing, typography } from '@openride/ui';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { PendingOffer } from '../lib/driver-state';
@@ -13,6 +13,7 @@ interface Props {
 export function OfferScreen({ offer, onAccept, onDecline }: Props) {
   const [remaining, setRemaining] = useState(() => secsUntil(offer.responds_by));
   const [busy, setBusy] = useState(false);
+  const expiredHandled = useRef(false);
 
   useEffect(() => {
     const id = setInterval(() => setRemaining(secsUntil(offer.responds_by)), 250);
@@ -21,6 +22,15 @@ export function OfferScreen({ offer, onAccept, onDecline }: Props) {
 
   const expired = remaining <= 0;
   const trip = offer.trips;
+
+  // On expiry, auto-decline once so the trip re-dispatches to the next driver
+  // without waiting for the cron backstop.
+  useEffect(() => {
+    if (expired && !expiredHandled.current && !busy) {
+      expiredHandled.current = true;
+      void onDecline(offer.trip_id).catch(() => {});
+    }
+  }, [expired, busy, offer.trip_id, onDecline]);
 
   async function act(fn: (id: string) => Promise<void>, label: string): Promise<void> {
     setBusy(true);

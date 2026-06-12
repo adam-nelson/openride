@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
 import { HttpError, audit, requireCaller } from '../_shared/auth.ts';
+import { runDispatch } from '../_shared/dispatch.ts';
 import { computeFareCents, estimateDurationS, haversineM } from '../_shared/fare.ts';
 
 interface Body {
@@ -88,9 +89,17 @@ Deno.serve(async (req: Request) => {
 
     await audit(ctx, 'bookings.created', 'bookings', b.id, null, b);
 
-    // Phase 4: trigger dispatch.assign(trip.id). Not in Sprint 1.
+    // Auto-dispatch immediate bookings. Scheduled trips are promoted near their
+    // pickup time (cron) before dispatching.
+    let dispatch: unknown = null;
+    if (body.type === 'now') {
+      dispatch = await runDispatch(ctx.serviceClient, t.id).catch((e: Error) => ({
+        status: 'error',
+        message: e.message,
+      }));
+    }
 
-    return json({ booking_id: b.id, trip_id: t.id });
+    return json({ booking_id: b.id, trip_id: t.id, dispatch });
   } catch (e) {
     if (e instanceof HttpError) return error(e.message, e.status, e.code);
     return error((e as Error).message, 500, 'unexpected');

@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
 import { HttpError, audit, requireCaller } from '../_shared/auth.ts';
+import { runDispatch } from '../_shared/dispatch.ts';
 
 interface Body {
   trip_id: string;
@@ -32,8 +33,12 @@ Deno.serve(async (req: Request) => {
       reason: body.reason ?? null,
     });
 
-    // Phase 4: the dispatch engine re-offers this trip to the next candidate.
-    return json({ ok: true });
+    // Re-offer to the next eligible driver.
+    const dispatch = await runDispatch(ctx.serviceClient, body.trip_id).catch((e: Error) => ({
+      status: 'error',
+      message: e.message,
+    }));
+    return json({ ok: true, dispatch });
   } catch (e) {
     if (e instanceof HttpError) return error(e.message, e.status, e.code);
     return error((e as Error).message, 500, 'unexpected');
