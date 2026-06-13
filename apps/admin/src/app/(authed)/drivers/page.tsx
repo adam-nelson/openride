@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { getSupabaseServer } from '@/lib/supabase-server';
 
 export default async function DriversPage() {
@@ -25,8 +27,12 @@ export default async function DriversPage() {
           {(drivers ?? []).map((d: Record<string, unknown>) => {
             const u = d.users as { display_name?: string; phone?: string } | null;
             return (
-              <tr key={String(d.user_id)} className="border-t">
-                <td className="px-4 py-2">{u?.display_name ?? '—'}</td>
+              <tr key={String(d.user_id)} className="border-t hover:bg-gray-50">
+                <td className="px-4 py-2">
+                  <Link href={`/drivers/${String(d.user_id)}`} className="text-brand hover:underline">
+                    {u?.display_name ?? '—'}
+                  </Link>
+                </td>
                 <td className="px-4 py-2">{u?.phone ?? '—'}</td>
                 <td className="px-4 py-2">{String(d.status)}</td>
                 <td className="px-4 py-2">{String(d.authority_expiry ?? '—')}</td>
