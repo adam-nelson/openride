@@ -11,9 +11,10 @@ interface Props {
   online: boolean;
   onGoOnline: (vehicleId: string) => Promise<void>;
   onGoOffline: () => Promise<void>;
+  onReport: () => void;
 }
 
-export function HomeScreen({ driverId, displayName, online, onGoOnline, onGoOffline }: Props) {
+export function HomeScreen({ driverId, displayName, online, onGoOnline, onGoOffline, onReport }: Props) {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -50,9 +51,14 @@ export function HomeScreen({ driverId, displayName, online, onGoOnline, onGoOffl
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.hi}>{displayName ?? 'Driver'}</Text>
-        <Pressable onPress={() => void signOut()} hitSlop={8}>
-          <Text style={styles.signOut}>Sign out</Text>
-        </Pressable>
+        <View style={styles.headerLinks}>
+          <Pressable onPress={onReport} hitSlop={8}>
+            <Text style={styles.link}>Report</Text>
+          </Pressable>
+          <Pressable onPress={() => void signOut()} hitSlop={8}>
+            <Text style={styles.signOut}>Sign out</Text>
+          </Pressable>
+        </View>
       </View>
 
       <View style={[styles.statusPill, online ? styles.onlinePill : styles.offlinePill]}>
@@ -110,6 +116,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: spacing.xl, backgroundColor: colors.surface },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xl },
   hi: { fontSize: typography.size.lg, fontWeight: '600' },
+  headerLinks: { flexDirection: 'row', gap: spacing.md, alignItems: 'center' },
+  link: { color: colors.brandDark, fontSize: typography.size.sm, fontWeight: '600' },
   signOut: { color: colors.danger, fontSize: typography.size.sm, fontWeight: '600' },
   statusPill: { alignSelf: 'flex-start', paddingVertical: spacing.xs, paddingHorizontal: spacing.md, borderRadius: 999, marginBottom: spacing.lg },
   onlinePill: { backgroundColor: colors.online },

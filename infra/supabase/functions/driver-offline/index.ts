@@ -24,6 +24,13 @@ Deno.serve(async (req: Request) => {
       await audit(ctx, 'driver.offline', 'driver_status', (closed as any).id, null, null);
     }
 
+    // Close the open fatigue session (unless a lockout already ended it).
+    await ctx.serviceClient
+      .from('fatigue_sessions')
+      .update({ ended_at: new Date().toISOString() })
+      .eq('driver_id', ctx.userId)
+      .is('ended_at', null);
+
     return json({ ok: true });
   } catch (e) {
     if (e instanceof HttpError) return error(e.message, e.status, e.code);

@@ -59,6 +59,18 @@ Deno.serve(async (req: Request) => {
 
     await audit(ctx, 'driver.online', 'driver_status', (shift as any).id, null, shift);
 
+    // Open a fatigue session for the shift if none is open. Drive time
+    // accumulates here on trip completion; lockout is enforced by trigger.
+    const { data: openSession } = await ctx.serviceClient
+      .from('fatigue_sessions')
+      .select('id')
+      .eq('driver_id', ctx.userId)
+      .is('ended_at', null)
+      .maybeSingle();
+    if (!openSession) {
+      await ctx.serviceClient.from('fatigue_sessions').insert({ driver_id: ctx.userId });
+    }
+
     return json({ ok: true });
   } catch (e) {
     if (e instanceof HttpError) return error(e.message, e.status, e.code);

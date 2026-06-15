@@ -8,6 +8,7 @@ import { HomeScreen } from './src/screens/HomeScreen';
 import { PhoneAuthScreen } from './src/screens/PhoneAuthScreen';
 import { ProfileSetupScreen } from './src/screens/ProfileSetupScreen';
 import { ReceiptsScreen } from './src/screens/ReceiptsScreen';
+import { ReportIncidentScreen } from './src/screens/ReportIncidentScreen';
 import { TripScreen } from './src/screens/TripScreen';
 import { useProfile, useSession } from './src/lib/auth';
 
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   Home: undefined;
   Trip: { tripId: string };
   Receipts: undefined;
+  ReportIncident: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -46,6 +48,11 @@ export default function App() {
             </Stack.Screen>
             <Stack.Screen name="Trip" component={TripScreen} options={{ title: 'Your trip' }} />
             <Stack.Screen name="Receipts" component={ReceiptsScreen} options={{ title: 'Receipts' }} />
+            <Stack.Screen
+              name="ReportIncident"
+              component={ReportIncidentScreen}
+              options={{ title: 'Report an issue' }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       )}

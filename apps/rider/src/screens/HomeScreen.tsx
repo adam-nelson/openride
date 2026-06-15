@@ -149,6 +149,9 @@ export function HomeScreen({ displayName }: { displayName?: string | null }) {
           <Pressable onPress={onAddCard} hitSlop={8}>
             <Text style={styles.link}>Add card</Text>
           </Pressable>
+          <Pressable onPress={() => navigation.navigate('ReportIncident')} hitSlop={8}>
+            <Text style={styles.link}>Help</Text>
+          </Pressable>
           <Pressable onPress={() => void signOut()} hitSlop={8}>
             <Text style={styles.signOut}>Sign out</Text>
           </Pressable>

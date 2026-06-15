@@ -1,5 +1,6 @@
 import type { Session } from '@supabase/supabase-js';
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -7,6 +8,7 @@ import { ActiveTripScreen } from './src/screens/ActiveTripScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { OfferScreen } from './src/screens/OfferScreen';
 import { PhoneAuthScreen } from './src/screens/PhoneAuthScreen';
+import { ReportIncidentScreen } from './src/screens/ReportIncidentScreen';
 import { api } from './src/lib/api';
 import { useSession } from './src/lib/auth';
 import { useDriverState } from './src/lib/driver-state';
@@ -20,6 +22,7 @@ function SignedIn({ session }: { session: Session }) {
   const displayName =
     (session.user.user_metadata?.display_name as string | undefined) ?? session.user.phone ?? null;
   const state = useDriverState(session);
+  const [showReport, setShowReport] = useState(false);
 
   if (state.loading) {
     return (
@@ -27,6 +30,10 @@ function SignedIn({ session }: { session: Session }) {
         <ActivityIndicator />
       </Centered>
     );
+  }
+
+  if (showReport) {
+    return <ReportIncidentScreen onDone={() => setShowReport(false)} />;
   }
 
   // Active trip takes precedence, then a pending offer, then the home/idle view.
@@ -65,6 +72,7 @@ function SignedIn({ session }: { session: Session }) {
       online={state.online}
       onGoOnline={state.goOnline}
       onGoOffline={state.goOffline}
+      onReport={() => setShowReport(true)}
     />
   );
 }

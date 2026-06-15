@@ -12,6 +12,7 @@ const nav = [
   { href: '/fares', label: 'Fares' },
   { href: '/payments', label: 'Payments' },
   { href: '/compliance', label: 'Compliance' },
+  { href: '/incidents', label: 'Incidents' },
   { href: '/audit', label: 'Audit log' },
 ];
 
