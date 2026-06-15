@@ -47,7 +47,10 @@ export function evaluateCompliance(
   }
 
   return {
-    isCompliant: missing.length === 0 && expired.length === 0,
+    // A required doc that is missing, expired, OR still pending approval means
+    // the subject is not yet compliant (mirrors the dispatch filter, which
+    // requires an approved, unexpired document).
+    isCompliant: missing.length === 0 && expired.length === 0 && pending.length === 0,
     missing,
     expired,
     pending,

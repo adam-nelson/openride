@@ -13,7 +13,7 @@ This is the MVP scaffold. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for
 
 ## Status
 
-**v0.0.1 — scaffold.** Repo skeleton, schema, RLS, app shells. Not yet a working product. Tracking the Sprint 1 backlog from the plan.
+**MVP feature-complete (single-operator).** End-to-end loop works: rider signup → book → automatic dispatch → driver accept & drive → complete → payment → receipt, with an operator console, compliance + fatigue enforcement, and incident reporting. Payments verify against Stripe test keys; multi-operator (Phase 9) is the next milestone. See [docs/TESTING.md](docs/TESTING.md) and [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Quick start (local dev)
 
@@ -103,14 +103,14 @@ docs/        ARCHITECTURE · COMPLIANCE · SECURITY · OPERATIONS · DEMO
 ## Roadmap
 
 - [x] Phase 0 — Repo & architecture scaffold
-- [ ] Phase 1 — Auth & DB
-- [ ] Phase 2 — Rider booking flow
-- [ ] Phase 3 — Driver online & offers
-- [ ] Phase 4 — Dispatch engine
-- [ ] Phase 5 — Admin portal
-- [ ] Phase 6 — Payments & receipts
-- [ ] Phase 7 — Compliance & fatigue
-- [ ] Phase 8 — Test, deploy, docs
+- [x] Phase 1 — Auth & DB
+- [x] Phase 2 — Rider booking flow
+- [x] Phase 3 — Driver online & offers
+- [x] Phase 4 — Dispatch engine
+- [x] Phase 5 — Admin portal
+- [x] Phase 6 — Payments & receipts
+- [x] Phase 7 — Compliance & fatigue
+- [x] Phase 8 — Test, deploy, docs (RLS suite, dispatch sim, CI, deploy guide; E2E pending)
 - [ ] Phase 9+ — Multi-operator
 
 ## Contributing

@@ -63,3 +63,36 @@ jobs:
             echo "Applying $f"
             psql -h localhost -U postgres -d openride_ci -v ON_ERROR_STOP=1 -f "$f"
           done
+
+  rls-security:
+    name: Security · RLS suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start Supabase (migrations + seed)
+        run: supabase start --workdir infra
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Run RLS suite
+        run: |
+          export SUPABASE_URL="$(supabase status --workdir infra -o env | grep '^API_URL' | cut -d= -f2 | tr -d '\"')"
+          export SUPABASE_ANON_KEY="$(supabase status --workdir infra -o env | grep '^ANON_KEY' | cut -d= -f2 | tr -d '\"')"
+          pnpm --filter @openride/testing test
+
+      - name: Stop Supabase
+        if: always()
+        run: supabase stop --workdir infra --no-backup
