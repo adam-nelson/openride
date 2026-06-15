@@ -32,10 +32,33 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Env
+# Env — ignore every .env variant (.env, .env.local, .env.production, …)
+# but keep the committed, secret-free templates.
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+!**/.env.example
+
+# Secrets & credentials — never commit real keys/certs/tokens.
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.mobileprovision
+id_rsa
+id_ed25519
+*service-account*.json
+gha-creds-*.json
+secrets.json
+*.secret
+.secrets/
+# Supabase CLI local secrets / generated env
+infra/supabase/.env
+google-services.json
+GoogleService-Info.plist
 
 # Supabase
 infra/supabase/.branches/
