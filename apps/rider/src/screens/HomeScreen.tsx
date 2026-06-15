@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
+  Linking,
   Pressable,
   StyleSheet,
   Text,
@@ -108,6 +109,15 @@ export function HomeScreen({ displayName }: { displayName?: string | null }) {
     }
   }, [pickup, dropoff, vehicleType]);
 
+  const onAddCard = useCallback(async () => {
+    try {
+      const { url } = await api.setupCard();
+      if (url) await Linking.openURL(url);
+    } catch (e) {
+      Alert.alert('Add card', (e as Error).message);
+    }
+  }, []);
+
   const onBook = useCallback(async () => {
     if (!pickup || !dropoff) return;
     setBooking(true);
@@ -132,9 +142,17 @@ export function HomeScreen({ displayName }: { displayName?: string | null }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.hi}>Hi{displayName ? `, ${displayName}` : ''} 👋</Text>
-        <Pressable onPress={() => void signOut()} hitSlop={8}>
-          <Text style={styles.signOut}>Sign out</Text>
-        </Pressable>
+        <View style={styles.headerLinks}>
+          <Pressable onPress={() => navigation.navigate('Receipts')} hitSlop={8}>
+            <Text style={styles.link}>Receipts</Text>
+          </Pressable>
+          <Pressable onPress={onAddCard} hitSlop={8}>
+            <Text style={styles.link}>Add card</Text>
+          </Pressable>
+          <Pressable onPress={() => void signOut()} hitSlop={8}>
+            <Text style={styles.signOut}>Sign out</Text>
+          </Pressable>
+        </View>
       </View>
 
       <Text style={styles.label}>Pickup</Text>
@@ -228,6 +246,8 @@ export function HomeScreen({ displayName }: { displayName?: string | null }) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: spacing.xl, backgroundColor: colors.surface },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.lg },
+  headerLinks: { flexDirection: 'row', gap: spacing.md, alignItems: 'center' },
+  link: { color: colors.brand, fontSize: typography.size.sm, fontWeight: '600' },
   hi: { fontSize: typography.size.lg, fontWeight: '600' },
   signOut: { color: colors.danger, fontSize: typography.size.sm, fontWeight: '600' },
   label: { fontSize: typography.size.sm, color: colors.textMuted, marginTop: spacing.md, marginBottom: spacing.xs },

@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
 import { HttpError, audit, requireCaller } from '../_shared/auth.ts';
+import { captureForTrip } from '../_shared/payments.ts';
 
 type Event = 'en-route' | 'arrived' | 'start' | 'complete' | 'cancel';
 
@@ -71,7 +72,16 @@ Deno.serve(async (req: Request) => {
 
     await audit(ctx, `trip.${body.event}`, 'trips', body.trip_id, { status: t.status }, updated);
 
-    return json({ ok: true, trip: updated });
+    // On completion, charge the rider's card on file (no-op without Stripe).
+    let payment: unknown = null;
+    if (body.event === 'complete') {
+      payment = await captureForTrip(ctx.serviceClient, body.trip_id).catch((e: Error) => ({
+        status: 'failed',
+        reason: e.message,
+      }));
+    }
+
+    return json({ ok: true, trip: updated, payment });
   } catch (e) {
     if (e instanceof HttpError) return error(e.message, e.status, e.code);
     return error((e as Error).message, 500, 'unexpected');

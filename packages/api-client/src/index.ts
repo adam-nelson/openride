@@ -54,6 +54,19 @@ export class OpenrideApi {
     return this.invoke('bookings', req);
   }
 
+  /** Returns a hosted Stripe Checkout (setup) URL for adding a card on file. */
+  async setupCard(returnUrl?: string): Promise<{ url: string }> {
+    return this.invoke('me-setup-card', { return_url: returnUrl });
+  }
+
+  async refundPayment(paymentId: string, reason: string, amountCents?: number): Promise<{ ok: true }> {
+    return this.invoke('payments-refund', {
+      payment_id: paymentId,
+      reason,
+      amount_cents: amountCents,
+    });
+  }
+
   async cancelBooking(bookingId: string, reason: string): Promise<{ ok: true }> {
     return this.invoke(`bookings-${bookingId}-cancel`, { reason });
   }

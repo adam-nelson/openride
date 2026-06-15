@@ -7,6 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { PhoneAuthScreen } from './src/screens/PhoneAuthScreen';
 import { ProfileSetupScreen } from './src/screens/ProfileSetupScreen';
+import { ReceiptsScreen } from './src/screens/ReceiptsScreen';
 import { TripScreen } from './src/screens/TripScreen';
 import { useProfile, useSession } from './src/lib/auth';
 
@@ -14,6 +15,7 @@ export type RootStackParamList = {
   PhoneAuth: undefined;
   Home: undefined;
   Trip: { tripId: string };
+  Receipts: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -43,6 +45,7 @@ export default function App() {
               {() => <HomeScreen displayName={profile?.display_name} />}
             </Stack.Screen>
             <Stack.Screen name="Trip" component={TripScreen} options={{ title: 'Your trip' }} />
+            <Stack.Screen name="Receipts" component={ReceiptsScreen} options={{ title: 'Receipts' }} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

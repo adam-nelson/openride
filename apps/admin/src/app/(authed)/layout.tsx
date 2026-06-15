@@ -10,6 +10,7 @@ const nav = [
   { href: '/drivers', label: 'Drivers' },
   { href: '/vehicles', label: 'Vehicles' },
   { href: '/fares', label: 'Fares' },
+  { href: '/payments', label: 'Payments' },
   { href: '/compliance', label: 'Compliance' },
   { href: '/audit', label: 'Audit log' },
 ];
