@@ -43,6 +43,7 @@ Deno.serve(async (req: Request) => {
 
     await ctx.serviceClient.from('manual_overrides').insert({
       actor_id: ctx.userId,
+      operator_id: (trip as any).operator_id,
       override_kind: 'dispatch.manual_assign',
       target_table: 'trips',
       target_id: body.trip_id,

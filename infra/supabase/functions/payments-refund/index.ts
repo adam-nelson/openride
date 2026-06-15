@@ -27,7 +27,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: payment } = await ctx.serviceClient
       .from('payments')
-      .select('id, trip_id, amount_cents, status, stripe_payment_intent_id')
+      .select('id, trip_id, amount_cents, status, stripe_payment_intent_id, operator_id')
       .eq('id', body.payment_id)
       .maybeSingle();
     if (!payment) return error('Payment not found', 404);
@@ -55,6 +55,7 @@ Deno.serve(async (req: Request) => {
 
     await ctx.serviceClient.from('manual_overrides').insert({
       actor_id: ctx.userId,
+      operator_id: p.operator_id,
       override_kind: 'payment.refund',
       target_table: 'payments',
       target_id: p.id,

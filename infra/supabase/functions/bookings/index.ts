@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
-import { HttpError, audit, requireCaller } from '../_shared/auth.ts';
+import { HttpError, audit, operatorOf, requireCaller } from '../_shared/auth.ts';
 import { runDispatch } from '../_shared/dispatch.ts';
 import { computeFareCents, estimateDurationS, haversineM } from '../_shared/fare.ts';
 
@@ -32,6 +32,7 @@ Deno.serve(async (req: Request) => {
       return error('scheduled_pickup_at is required for scheduled bookings');
     }
 
+    const operatorId = await operatorOf(ctx.serviceClient, ctx.userId);
     const pickup = `SRID=4326;POINT(${body.pickup.lng} ${body.pickup.lat})`;
     const dropoff = `SRID=4326;POINT(${body.dropoff.lng} ${body.dropoff.lat})`;
 
@@ -51,6 +52,7 @@ Deno.serve(async (req: Request) => {
       .from('bookings')
       .insert({
         rider_id: ctx.userId,
+        operator_id: operatorId,
         type: body.type,
         pickup_label: body.pickup_label,
         pickup_point: pickup,
@@ -73,6 +75,7 @@ Deno.serve(async (req: Request) => {
       .insert({
         booking_id: b.id,
         rider_id: ctx.userId,
+        operator_id: operatorId,
         status: tripStatus,
         pickup_point: pickup,
         dropoff_point: dropoff,

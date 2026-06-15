@@ -33,7 +33,7 @@ export async function runDispatch(service: any, tripId: string): Promise<Dispatc
 
   const { data: trip, error: tripErr } = await service
     .from('trips')
-    .select('id, status')
+    .select('id, status, operator_id')
     .eq('id', tripId)
     .maybeSingle();
   if (tripErr) return { status: 'error', message: tripErr.message };
@@ -67,6 +67,7 @@ export async function runDispatch(service: any, tripId: string): Promise<Dispatc
   const { error: offerErr } = await service.from('trip_offers').insert({
     trip_id: tripId,
     driver_id: top.driver_id,
+    operator_id: trip.operator_id,
     responds_by: new Date(Date.now() + OFFER_TTL_MS).toISOString(),
     status: 'pending',
     pickup_eta_s: top.pickup_eta_s,

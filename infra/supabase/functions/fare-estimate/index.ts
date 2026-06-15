@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
-import { HttpError, requireCaller } from '../_shared/auth.ts';
+import { HttpError, operatorOf, requireCaller } from '../_shared/auth.ts';
 import { computeFareCents, estimateDurationS, haversineM } from '../_shared/fare.ts';
 
 interface Body {
@@ -40,6 +40,7 @@ Deno.serve(async (req: Request) => {
       .from('fare_estimates')
       .insert({
         rider_id: ctx.userId,
+        operator_id: await operatorOf(ctx.serviceClient, ctx.userId),
         pickup_point: `SRID=4326;POINT(${body.pickup.lng} ${body.pickup.lat})`,
         dropoff_point: `SRID=4326;POINT(${body.dropoff.lng} ${body.dropoff.lat})`,
         vehicle_type: body.vehicle_type,

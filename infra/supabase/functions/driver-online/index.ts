@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
-import { HttpError, audit, requireCaller } from '../_shared/auth.ts';
+import { HttpError, audit, operatorOf, requireCaller } from '../_shared/auth.ts';
 
 interface Body {
   vehicle_id: string;
@@ -46,10 +46,12 @@ Deno.serve(async (req: Request) => {
       .eq('driver_id', ctx.userId)
       .is('ended_at', null);
 
+    const operatorId = await operatorOf(ctx.serviceClient, ctx.userId);
     const { data: shift, error: sErr } = await ctx.serviceClient
       .from('driver_status')
       .insert({
         driver_id: ctx.userId,
+        operator_id: operatorId,
         status: 'online',
         vehicle_id: body.vehicle_id,
       })
@@ -68,7 +70,9 @@ Deno.serve(async (req: Request) => {
       .is('ended_at', null)
       .maybeSingle();
     if (!openSession) {
-      await ctx.serviceClient.from('fatigue_sessions').insert({ driver_id: ctx.userId });
+      await ctx.serviceClient
+        .from('fatigue_sessions')
+        .insert({ driver_id: ctx.userId, operator_id: operatorId });
     }
 
     return json({ ok: true });

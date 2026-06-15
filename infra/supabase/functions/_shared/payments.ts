@@ -15,7 +15,7 @@ export async function captureForTrip(service: any, tripId: string): Promise<Capt
 
   const { data: trip } = await service
     .from('trips')
-    .select('id, rider_id, driver_id, final_fare_cents, payment_status')
+    .select('id, rider_id, driver_id, final_fare_cents, payment_status, operator_id')
     .eq('id', tripId)
     .maybeSingle();
   if (!trip) return { status: 'skipped', reason: 'trip_not_found' };
@@ -84,6 +84,7 @@ async function upsertPayment(service: any, trip: any, fields: Record<string, unk
       trip_id: trip.id,
       rider_id: trip.rider_id,
       driver_id: trip.driver_id,
+      operator_id: trip.operator_id,
       amount_cents: trip.final_fare_cents,
       currency: 'AUD',
       ...fields,

@@ -58,6 +58,16 @@ export class HttpError extends Error {
   }
 }
 
+/** The operator a user belongs to — used to stamp operator_id on service-role inserts. */
+export async function operatorOf(serviceClient: any, userId: string): Promise<string | null> {
+  const { data } = await serviceClient
+    .from('users')
+    .select('operator_id')
+    .eq('id', userId)
+    .maybeSingle();
+  return (data as { operator_id?: string } | null)?.operator_id ?? null;
+}
+
 export async function audit(
   ctx: { serviceClient: any; userId: string; role: string },
   action: string,
