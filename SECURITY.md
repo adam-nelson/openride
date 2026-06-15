@@ -4,7 +4,7 @@
 
 **Do not** open a public issue for security vulnerabilities.
 
-Email the maintainers at `security@openride.example` (replace with your fork's address) with:
+Email the maintainers at `adam@i386.tv` (replace with your fork's address) with:
 - A description of the issue and where you found it.
 - Steps to reproduce, including any proof-of-concept code.
 - The impact you believe it has.
