@@ -24,7 +24,11 @@ on conflict (id) do nothing;
 -- ============================================================================
 -- App config defaults
 -- ============================================================================
-insert into public.app_config (key, value, description) values
+-- app_config is per-operator since the Phase 9 multitenant migration
+-- (PK is (operator_id, key), operator_id NOT NULL), so stamp the default operator.
+insert into public.app_config (operator_id, key, value, description)
+select '00000000-0000-0000-0000-000000000001', key, value, description
+from (values
   ('dispatch.offer_timeout_s', '15'::jsonb, 'Seconds a driver has to respond to an offer'),
   ('dispatch.max_attempts', '5'::jsonb, 'Max consecutive offers before manual fallback'),
   ('dispatch.search_radius_m', '10000'::jsonb, 'Initial driver search radius in metres'),
@@ -33,7 +37,8 @@ insert into public.app_config (key, value, description) values
   ('retention.trip_locations_days', '90'::jsonb, 'How long to keep raw GPS trail'),
   ('retention.records_years', '7'::jsonb, 'How long to keep trip/payment/incident records'),
   ('booking.scheduled_lookahead_min', '15'::jsonb, 'Promote scheduled trips this many minutes before pickup')
-on conflict (key) do update set value = excluded.value;
+) as t(key, value, description)
+on conflict (operator_id, key) do update set value = excluded.value;
 
 -- ============================================================================
 -- Compliance rules — AU baseline
@@ -313,3 +318,28 @@ values
    now() - interval '1 day' + interval '14 minutes',
    1800, 1850, 2300, 540, 'paid')
 on conflict (id) do nothing;
+
+-- ============================================================================
+-- Stamp operator_id on directly-seeded rows.
+--
+-- The Phase 9 multitenant migration (0008) added a nullable operator_id to
+-- these tables and backfilled EXISTING rows to the default operator. Rows
+-- inserted afterwards by this seed default to NULL, which makes them invisible
+-- to operator-scoped staff under RLS (the migration's documented "safe failure
+-- mode"). Trigger-created rows (users / *_profiles / notification_preferences)
+-- already carry operator_id; the direct inserts above do not, so backfill them
+-- to the single demo operator here. Idempotent.
+-- ============================================================================
+do $$
+declare
+  v_op uuid := '00000000-0000-0000-0000-000000000001';
+  t text;
+  tables text[] := array[
+    'compliance_rules', 'fare_rules', 'vehicles', 'driver_documents',
+    'vehicle_documents', 'vehicle_inspections', 'bookings', 'trips'
+  ];
+begin
+  foreach t in array tables loop
+    execute format('update public.%I set operator_id = %L where operator_id is null', t, v_op);
+  end loop;
+end $$;
