@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@openride/config": "workspace:*",
-    "typescript": "~5.9.2",
+    "typescript": "~5.9.3",
     "vitest": "^2.0.5"
   }
 }

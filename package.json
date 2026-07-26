@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "packageManager": "pnpm@9.12.0",
   "engines": {
-    "node": ">=20.11"
+    "node": ">=24"
   },
   "scripts": {
     "build": "turbo run build",
@@ -26,17 +26,23 @@
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "@types/node": "^20.19.42",
-    "prettier": "^3.8.4",
+    "@types/node": "^24",
+    "prettier": "^3.9.6",
     "supabase": "2.105.0",
-    "tsx": "^4.22.4",
-    "turbo": "^2.9.17",
-    "typescript": "~5.9.2"
+    "tsx": "^4.23.1",
+    "turbo": "^2.10.7",
+    "typescript": "~5.9.3"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.108.1",
     "next": "16.2.9",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "19.2.3",
+      "react-dom": "19.2.3"
+    }
   }
 }

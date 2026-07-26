@@ -4,6 +4,11 @@
   "private": true,
   "license": "Apache-2.0",
   "main": "index.ts",
+  "expo": {
+    "install": {
+      "exclude": ["typescript"]
+    }
+  },
   "scripts": {
     "dev": "expo start --clear",
     "android": "expo start --android",
@@ -22,17 +27,17 @@
     "@react-navigation/native": "^7.3.0",
     "@react-navigation/native-stack": "^7.17.0",
     "@supabase/supabase-js": "^2.45.0",
-    "expo": "~56.0.0",
-    "expo-constants": "~56.0.17",
-    "expo-linking": "~56.0.13",
-    "expo-location": "~56.0.16",
+    "expo": "~56.0.17",
+    "expo-constants": "~56.0.22",
+    "expo-linking": "~56.0.16",
+    "expo-location": "~56.0.22",
     "expo-secure-store": "~56.0.4",
     "expo-status-bar": "~56.0.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.85.3",
     "react-native-safe-area-context": "~5.7.0",
-    "react-native-screens": "~4.25.2",
+    "react-native-screens": "~4.26.0",
     "react-native-url-polyfill": "^2.0.0",
     "zustand": "^5.0.0"
   },
@@ -41,6 +46,6 @@
     "@openride/config": "workspace:*",
     "@types/react": "~19.2.0",
     "babel-preset-expo": "~56.0.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.3"
   }
 }
