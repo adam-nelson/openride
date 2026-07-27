@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#1f6feb"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "tv.openride.rider",
@@ -28,10 +30,19 @@
         "backgroundColor": "#1f6feb"
       },
       "package": "tv.openride.rider",
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     },
-    "web": { "favicon": "./assets/favicon.png" },
-    "plugins": ["expo-location", "expo-secure-store"],
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-location",
+      "expo-secure-store",
+      "@maplibre/maplibre-react-native"
+    ],
     "extra": {}
   }
 }

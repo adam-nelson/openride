@@ -2129,6 +2129,7 @@ export type Database = {
       enforce_compliance: { Args: never; Returns: undefined }
       equals: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
       expire_stale_offers: { Args: never; Returns: undefined }
+      trip_tracking_snapshot: { Args: { p_trip_id: string }; Returns: Json }
       geometry: { Args: { "": string }; Returns: unknown }
       geometry_above: {
         Args: { geom1: unknown; geom2: unknown }

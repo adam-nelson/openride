@@ -47,6 +47,9 @@ Then:
 
 - Admin portal: http://localhost:3000
 - Rider app: scan QR from `apps/rider` (Expo Go) or open `i`/`a`
+  - **Live trip map** (MapLibre + MapTiler tiles) requires a custom Expo
+    development / EAS build — MapLibre is not available in Expo Go. Address
+    search still works in Expo Go when `EXPO_PUBLIC_MAPTILER_KEY` is set.
 - Driver app: scan QR from `apps/driver`
 
 Demo accounts (after `make reset`):

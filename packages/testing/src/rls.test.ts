@@ -119,4 +119,60 @@ describe('RLS isolation', () => {
       .eq('user_id', fixtures.users.drivers[1].id);
     expect(data ?? []).toHaveLength(0);
   });
+
+  it('trip_tracking_snapshot is owner-scoped; live driver coords only when trackable', async () => {
+    if (!reachable) return;
+    const rita = await signInPhone(fixtures.users.riders[0].phone);
+    const roman = await signInPhone(fixtures.users.riders[1].phone);
+    const disp = await signInEmail(fixtures.users.dispatcher.email);
+    const drew = await signInPhone(fixtures.users.drivers[0].phone);
+
+    const { data: own } = await rita.rpc('trip_tracking_snapshot', { p_trip_id: RITA_TRIP });
+    expect(own).toMatchObject({
+      id: RITA_TRIP,
+      status: 'completed',
+      pickup: { lat: expect.any(Number), lng: expect.any(Number) },
+      dropoff: { lat: expect.any(Number), lng: expect.any(Number) },
+      driver: null,
+    });
+
+    const { data: other } = await roman.rpc('trip_tracking_snapshot', { p_trip_id: RITA_TRIP });
+    expect(other).toBeNull();
+
+    // Promote to an in-progress trip, stream a location, assert rider can see it.
+    const { error: promoteErr } = await disp
+      .from('trips')
+      .update({ status: 'in_progress' } as never)
+      .eq('id', RITA_TRIP);
+    expect(promoteErr).toBeNull();
+
+    const { error: locErr } = await drew.from('driver_location_latest').upsert(
+      {
+        driver_id: fixtures.users.drivers[0].id,
+        point: 'SRID=4326;POINT(151.175 -33.910)',
+        recorded_at: new Date().toISOString(),
+        heading_deg: 90,
+      } as never,
+      { onConflict: 'driver_id' },
+    );
+    expect(locErr).toBeNull();
+
+    const { data: live } = await rita.rpc('trip_tracking_snapshot', { p_trip_id: RITA_TRIP });
+    expect(live).toMatchObject({
+      status: 'in_progress',
+      driver: {
+        lat: expect.closeTo(-33.91, 2),
+        lng: expect.closeTo(151.175, 3),
+        heading_deg: 90,
+      },
+    });
+
+    const { data: strangerLive } = await roman.rpc('trip_tracking_snapshot', {
+      p_trip_id: RITA_TRIP,
+    });
+    expect(strangerLive).toBeNull();
+
+    // Restore seed status so later suites stay deterministic.
+    await disp.from('trips').update({ status: 'completed' } as never).eq('id', RITA_TRIP);
+  });
 });

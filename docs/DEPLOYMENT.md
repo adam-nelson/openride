@@ -45,7 +45,10 @@ MVP deploy path; harden per your operator's security requirements.
 2. `eas build --platform ios|android` and submit via `eas submit`.
 3. Note: features that need native modules beyond Expo Go (maps, background
    location, native Stripe) require the dev/production client — already
-   EAS-built, so they work in store builds.
+   EAS-built, so they work in store builds. The rider live trip map uses
+   `@maplibre/maplibre-react-native` with MapTiler tiles
+   (`EXPO_PUBLIC_MAPTILER_KEY`); rebuild the rider client after adding that
+   plugin.
 
 ## 4. Stripe
 

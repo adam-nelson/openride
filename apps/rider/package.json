@@ -15,8 +15,10 @@
     "clean": "rm -rf .expo dist .turbo *.tsbuildinfo"
   },
   "dependencies": {
+    "@maplibre/maplibre-react-native": "^11.3.6",
     "@openride/api-client": "workspace:*",
     "@openride/db": "workspace:*",
+    "@openride/domain": "workspace:*",
     "@openride/realtime": "workspace:*",
     "@openride/ui": "workspace:*",
     "@react-navigation/native": "^7.3.0",
