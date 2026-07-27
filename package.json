@@ -16,7 +16,7 @@
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
-    "db:start": "supabase start --workdir infra",
+    "db:start": "supabase start --workdir infra --exclude vector",
     "db:status": "supabase status --workdir infra",
     "db:stop": "supabase stop --workdir infra",
     "db:reset": "supabase db reset --workdir infra",
