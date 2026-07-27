@@ -1,6 +1,7 @@
 import { colors, spacing, typography } from '@openride/ui';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signOut } from '../lib/auth';
 import { fetchMyVehicles, type Vehicle } from '../lib/driver-state';
@@ -48,7 +49,7 @@ export function HomeScreen({ driverId, displayName, online, onGoOnline, onGoOffl
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'right', 'bottom', 'left']}>
       <View style={styles.header}>
         <Text style={styles.hi}>{displayName ?? 'Driver'}</Text>
         <View style={styles.headerLinks}>
@@ -108,7 +109,7 @@ export function HomeScreen({ driverId, displayName, online, onGoOnline, onGoOffl
           )}
         </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

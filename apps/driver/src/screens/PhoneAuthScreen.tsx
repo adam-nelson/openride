@@ -1,6 +1,7 @@
 import { colors, spacing, typography } from '@openride/ui';
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, TextInput } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { sendOtp, verifyOtp } from '../lib/auth';
 
@@ -34,7 +35,7 @@ export function PhoneAuthScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'right', 'bottom', 'left']}>
       <Text style={styles.title}>OpenRide Driver</Text>
       <Text style={styles.subtitle}>
         {stage === 'phone' ? 'Sign in with your driver phone number' : `Code sent to ${phone}`}
@@ -73,7 +74,7 @@ export function PhoneAuthScreen() {
           </Pressable>
         </>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
