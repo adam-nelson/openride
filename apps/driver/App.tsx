@@ -1,8 +1,8 @@
 import type { Session } from '@supabase/supabase-js';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ActivityIndicator } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActiveTripScreen } from './src/screens/ActiveTripScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
@@ -14,7 +14,11 @@ import { useSession } from './src/lib/auth';
 import { useDriverState } from './src/lib/driver-state';
 
 function Centered({ children }: { children: React.ReactNode }) {
-  return <View style={{ flex: 1, justifyContent: 'center' }}>{children}</View>;
+  return (
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }} edges={['top', 'right', 'bottom', 'left']}>
+      {children}
+    </SafeAreaView>
+  );
 }
 
 function SignedIn({ session }: { session: Session }) {

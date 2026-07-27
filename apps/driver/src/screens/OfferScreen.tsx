@@ -1,6 +1,7 @@
 import { colors, formatDistance, formatDurationS, formatMoney, spacing, typography } from '@openride/ui';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { PendingOffer } from '../lib/driver-state';
 
@@ -44,7 +45,7 @@ export function OfferScreen({ offer, onAccept, onDecline }: Props) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'right', 'bottom', 'left']}>
       <Text style={styles.countdown}>{expired ? 'Expired' : `${remaining}s`}</Text>
       {offer.pickup_eta_s != null ? (
         <Text style={styles.sub}>
@@ -79,7 +80,7 @@ export function OfferScreen({ offer, onAccept, onDecline }: Props) {
           {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Accept</Text>}
         </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

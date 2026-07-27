@@ -1,6 +1,7 @@
 import { colors, spacing, typography } from '@openride/ui';
 import { useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { supabase } from '../lib/supabase';
 
@@ -43,7 +44,7 @@ export function ReportIncidentScreen({ onDone }: { onDone: () => void }) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'right', 'bottom', 'left']}>
       <View style={styles.header}>
         <Text style={styles.title}>Report an issue</Text>
         <Pressable onPress={onDone} hitSlop={8}>
@@ -79,7 +80,7 @@ export function ReportIncidentScreen({ onDone }: { onDone: () => void }) {
       >
         <Text style={styles.buttonText}>{busy ? 'Submitting…' : 'Submit report'}</Text>
       </Pressable>
-    </View>
+    </SafeAreaView>
   );
 }
 

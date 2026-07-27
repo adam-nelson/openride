@@ -1,6 +1,7 @@
 import { colors, formatMoney, spacing, typography } from '@openride/ui';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { ActiveTrip } from '../lib/driver-state';
 
@@ -42,7 +43,7 @@ export function ActiveTripScreen({ trip, onEvent }: Props) {
   const fareCents = trip.final_fare_cents ?? trip.estimated_fare_cents;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'right', 'bottom', 'left']}>
       <Text style={styles.status}>{STATUS_LABEL[trip.status] ?? trip.status}</Text>
 
       <View style={styles.card}>
@@ -73,7 +74,7 @@ export function ActiveTripScreen({ trip, onEvent }: Props) {
           </Pressable>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
