@@ -47,7 +47,9 @@ Then:
 
 - Admin portal: http://localhost:3000
 - Rider app: scan QR from `apps/rider` (Expo Go) or open `i`/`a`
-- Driver app: scan QR from `apps/driver`
+- Driver app: scan QR from `apps/driver` — online map uses MapTiler dark tiles
+  (`EXPO_PUBLIC_MAPTILER_KEY` in `apps/driver/.env.local`; live MapLibre needs a
+  custom Expo/EAS build, not Expo Go)
 
 Demo accounts (after `make reset`):
 

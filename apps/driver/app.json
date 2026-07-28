@@ -37,7 +37,11 @@
       ]
     },
     "web": { "favicon": "./assets/favicon.png" },
-    "plugins": ["expo-location", "expo-secure-store"],
+    "plugins": [
+      "expo-location",
+      "expo-secure-store",
+      "@maplibre/maplibre-react-native"
+    ],
     "extra": {}
   }
 }

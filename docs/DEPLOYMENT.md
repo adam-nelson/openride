@@ -41,11 +41,12 @@ MVP deploy path; harden per your operator's security requirements.
 ## 3. Mobile apps (Expo → EAS)
 
 1. `EXPO_PUBLIC_SUPABASE_URL` / `EXPO_PUBLIC_SUPABASE_ANON_KEY` / `EXPO_PUBLIC_MAPTILER_KEY`
-   as EAS secrets / `eas.json` env.
+   as EAS secrets / `eas.json` env (MapTiler powers the driver online map and
+   place search).
 2. `eas build --platform ios|android` and submit via `eas submit`.
-3. Note: features that need native modules beyond Expo Go (maps, background
-   location, native Stripe) require the dev/production client — already
-   EAS-built, so they work in store builds.
+3. Note: features that need native modules beyond Expo Go (MapLibre maps,
+   background location, native Stripe) require the dev/production client —
+   already EAS-built, so they work in store builds.
 
 ## 4. Stripe
 

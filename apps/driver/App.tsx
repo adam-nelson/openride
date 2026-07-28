@@ -5,6 +5,7 @@ import { ActivityIndicator } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActiveTripScreen } from './src/screens/ActiveTripScreen';
+import { EarningsScreen } from './src/screens/EarningsScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { OfferScreen } from './src/screens/OfferScreen';
 import { PhoneAuthScreen } from './src/screens/PhoneAuthScreen';
@@ -27,6 +28,7 @@ function SignedIn({ session }: { session: Session }) {
     (session.user.user_metadata?.display_name as string | undefined) ?? session.user.phone ?? null;
   const state = useDriverState(session);
   const [showReport, setShowReport] = useState(false);
+  const [showEarnings, setShowEarnings] = useState(false);
 
   if (state.loading) {
     return (
@@ -38,6 +40,10 @@ function SignedIn({ session }: { session: Session }) {
 
   if (showReport) {
     return <ReportIncidentScreen onDone={() => setShowReport(false)} />;
+  }
+
+  if (showEarnings) {
+    return <EarningsScreen driverId={driverId} onBack={() => setShowEarnings(false)} />;
   }
 
   // Active trip takes precedence, then a pending offer, then the home/idle view.
@@ -77,6 +83,7 @@ function SignedIn({ session }: { session: Session }) {
       onGoOnline={state.goOnline}
       onGoOffline={state.goOffline}
       onReport={() => setShowReport(true)}
+      onOpenEarnings={() => setShowEarnings(true)}
     />
   );
 }
@@ -86,7 +93,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       {loading ? (
         <Centered>
           <ActivityIndicator />
