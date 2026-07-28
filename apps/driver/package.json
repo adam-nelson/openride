@@ -15,6 +15,8 @@
     "clean": "rm -rf .expo dist .turbo *.tsbuildinfo"
   },
   "dependencies": {
+    "@expo/vector-icons": "^15.1.1",
+    "@maplibre/maplibre-react-native": "^11.3.6",
     "@openride/api-client": "workspace:*",
     "@openride/db": "workspace:*",
     "@openride/realtime": "workspace:*",
@@ -24,6 +26,7 @@
     "@supabase/supabase-js": "^2.45.0",
     "expo": "~56.0.0",
     "expo-constants": "~56.0.17",
+    "expo-dev-client": "~56.0.24",
     "expo-linking": "~56.0.13",
     "expo-location": "~56.0.16",
     "expo-secure-store": "~56.0.4",

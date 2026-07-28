@@ -9,6 +9,7 @@
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET",
     "MAPTILER_KEY",
+    "EXPO_PUBLIC_MAPTILER_KEY",
     "VALHALLA_BASE_URL"
   ],
   "tasks": {
