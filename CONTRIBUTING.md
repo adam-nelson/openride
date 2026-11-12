@@ -1,6 +1,6 @@
-# Contributing to OpenRide
+# Contributing to ZoluRide
 
-Thanks for considering a contribution. OpenRide aims to be a useful, self-hostable platform for small ride-booking operators, and that only works if the codebase stays approachable.
+Thanks for considering a contribution. ZoluRide aims to be a useful, self-hostable platform for small ride-booking operators, and that only works if the codebase stays approachable.
 
 ## Ground rules
 

@@ -9,7 +9,7 @@ interface Props {
 export function ZoluLogo({ size = 36 }: Props) {
   return (
     <Image
-      accessibilityLabel="ZOLU logo"
+      accessibilityLabel="ZoluRide logo"
       fadeDuration={0}
       resizeMode="contain"
       resizeMethod="resize"

@@ -43,7 +43,7 @@ export default function App() {
       ) : (
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" options={{ title: 'OpenRide' }}>
+            <Stack.Screen name="Home" options={{ title: 'ZoluRide' }}>
               {() => <HomeScreen displayName={profile?.display_name} />}
             </Stack.Screen>
             <Stack.Screen name="Trip" component={TripScreen} options={{ title: 'Your trip' }} />

@@ -19,4 +19,4 @@ labels: bug
 **Environment**
 - App: rider / driver / admin
 - OS / device:
-- OpenRide version (git SHA or tag):
+- ZoluRide version (git SHA or tag):

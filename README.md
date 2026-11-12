@@ -1,6 +1,6 @@
-# ZOLU
+# ZoluRide
 
-**ZOLU is a Lagos driver-owned mobility platform.** It gives drivers a transparent alternative to commission-led ride-hailing: capped daily platform fees, ownership earned through completed trips, and a shared stabilisation fund, alongside rider booking and operator dispatch tools.
+**ZoluRide is a Lagos driver-owned mobility platform.** It gives drivers a transparent alternative to commission-led ride-hailing: capped daily platform fees, ownership earned through completed trips, and a shared stabilisation fund, alongside rider booking and operator dispatch tools.
 
 The product is built for Lagos streets and the people who keep them moving. Domain rules live in `packages/domain`, separate from the driver, rider, and admin interfaces.
 
@@ -13,7 +13,7 @@ All monetary amounts are represented in integer kobo throughout the domain engin
 | Daily Capped Subscription | Free below ₦4,000 gross for the day; ₦500 per ₦3,000 band thereafter, capped at ₦1,500 per day. |
 | 750-Trip Ownership Vesting | Drivers vest from 0% to 100% across 150, 300, 500, and 750 completed-trip milestones. |
 | Driver Stabilisation Fund | Up to ₦3,000 top-up for drivers with at least 10 online hours and 8 completed trips, when gross earnings are below ₦20,000. |
-| Competitor Commission Comparison | Compares ZOLU's capped fee with Uber's 25% and Bolt's 20% commissions. Percentage-based net amounts are rounded to integer kobo. |
+| Competitor Commission Comparison | Compares ZoluRide's capped fee with Uber's 25% and Bolt's 20% commissions. Percentage-based net amounts are rounded to integer kobo. |
 
 ## Quickstart
 
@@ -41,7 +41,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the system design.
 
 ## Compliance
 
-ZOLU records driver and vehicle compliance information, including authorities, inspections, insurance, fatigue sessions, incidents, and audit history. Operators remain responsible for meeting the requirements that apply in their jurisdiction. See [docs/COMPLIANCE.md](docs/COMPLIANCE.md) for the current compliance baseline and extension guidance.
+ZoluRide records driver and vehicle compliance information, including authorities, inspections, insurance, fatigue sessions, incidents, and audit history. Operators remain responsible for meeting the requirements that apply in their jurisdiction. See [docs/COMPLIANCE.md](docs/COMPLIANCE.md) for the current compliance baseline and extension guidance.
 
 ## Platform Stack
 

@@ -14,11 +14,11 @@ interface Props {
   documents: DriverDocument[];
   onBack: () => void;
   onSubmit: (uploadedTypes: DriverDocumentType[]) => Promise<void>;
-  onMockAdminVerify: () => Promise<void>;
+  onPreviewVerify?: () => Promise<void>;
   preview?: boolean;
 }
 
-export function DocumentsScreen({ documents, onBack, onSubmit, onMockAdminVerify, preview = false }: Props) {
+export function DocumentsScreen({ documents, onBack, onSubmit, onPreviewVerify, preview = false }: Props) {
   const [uploaded, setUploaded] = useState<Set<DriverDocumentType>>(
     () => new Set(documents.filter((document) => document.uploaded && document.status !== 'verified').map((document) => document.type)),
   );
@@ -44,13 +44,13 @@ export function DocumentsScreen({ documents, onBack, onSubmit, onMockAdminVerify
     }
   }
 
-  async function mockAdminVerify(): Promise<void> {
+  async function simulatePreviewVerification(): Promise<void> {
     setBusy(true);
     setError(null);
     setMessage(null);
     try {
-      await onMockAdminVerify();
-      setMessage('Preview documents verified locally.');
+      await onPreviewVerify?.();
+      setMessage('Preview verification simulated locally. No review record was changed.');
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -127,14 +127,14 @@ export function DocumentsScreen({ documents, onBack, onSubmit, onMockAdminVerify
             {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitText}>Submit for Review</Text>}
           </Pressable>
         ) : null}
-        {__DEV__ ? (
+        {__DEV__ && preview && onPreviewVerify ? (
           <Pressable
             accessibilityRole="button"
             style={[styles.verifyButton, busy && styles.disabled]}
             disabled={busy}
-            onPress={() => void mockAdminVerify()}
+            onPress={() => void simulatePreviewVerification()}
           >
-            <Text style={styles.submitText}>{preview ? 'Simulate Admin Verification' : 'Mock Admin Verify'}</Text>
+            <Text style={styles.submitText}>Simulate Verification (Preview Only)</Text>
           </Pressable>
         ) : null}
       </View>

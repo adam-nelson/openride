@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
 import { HttpError, audit, requireCaller } from '../_shared/auth.ts';
+import { driverDocumentsAreCompliant, vehicleDocumentsAreCompliant } from '../_shared/compliance.ts';
 
 interface Body {
   trip_id: string;
@@ -15,6 +16,50 @@ Deno.serve(async (req: Request) => {
     const ctx = await requireCaller(req, ['driver']);
     const body = (await req.json()) as Body;
     if (!body?.trip_id) return error('trip_id is required');
+
+    const { data: driver, error: driverErr } = await ctx.serviceClient
+      .from('driver_profiles')
+      .select('status, fatigue_locked_until')
+      .eq('user_id', ctx.userId)
+      .maybeSingle();
+    if (driverErr) return error(driverErr.message, 500, 'db_error');
+    if (!driver || driver.status !== 'approved') return error('Driver not approved', 403, 'not_approved');
+    if (driver.fatigue_locked_until && new Date(driver.fatigue_locked_until) > new Date()) {
+      return error('Driver is fatigue-locked', 403, 'fatigue_locked');
+    }
+
+    let compliant: boolean;
+    try {
+      compliant = await driverDocumentsAreCompliant(ctx.serviceClient, ctx.userId);
+    } catch (e) {
+      return error((e as Error).message, 500, 'compliance_check_failed');
+    }
+    if (!compliant) return error('Required approved, unexpired driver documents are missing', 403, 'compliance_incomplete');
+
+    const { data: shift, error: shiftErr } = await ctx.serviceClient
+      .from('driver_status')
+      .select('status, vehicle_id')
+      .eq('driver_id', ctx.userId)
+      .is('ended_at', null)
+      .maybeSingle();
+    if (shiftErr) return error(shiftErr.message, 500, 'db_error');
+    if (!shift || shift.status !== 'online' || !shift.vehicle_id) {
+      return error('An online shift with an assigned vehicle is required to accept offers', 409, 'shift_not_online');
+    }
+    const { data: vehicle, error: vehicleErr } = await ctx.serviceClient
+      .from('vehicles')
+      .select('status')
+      .eq('id', shift.vehicle_id)
+      .maybeSingle();
+    if (vehicleErr) return error(vehicleErr.message, 500, 'db_error');
+    if (!vehicle || vehicle.status !== 'active') return error('Vehicle not active', 403, 'vehicle_inactive');
+    let vehicleCompliant: boolean;
+    try {
+      vehicleCompliant = await vehicleDocumentsAreCompliant(ctx.serviceClient, shift.vehicle_id);
+    } catch (e) {
+      return error((e as Error).message, 500, 'compliance_check_failed');
+    }
+    if (!vehicleCompliant) return error('Required approved, unexpired vehicle documents are missing', 403, 'vehicle_compliance_incomplete');
 
     // Concurrency-safe accept: only succeeds if the offer is still pending and
     // the trip hasn't already been assigned.

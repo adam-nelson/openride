@@ -49,7 +49,7 @@ enable_confirmations = false
 [auth.sms]
 enable_signup = true
 enable_confirmations = true
-template = "Your OpenRide code is {{ .Code }}"
+template = "Your ZoluRide code is {{ .Code }}"
 
 # Phone login requires *some* provider section with `enabled = true`. For local
 # dev we declare a dummy Twilio block; `[auth.sms.test_otp]` below intercepts
@@ -70,6 +70,7 @@ auth_token = "dev_local_only_unused"
 "+61400000012" = "123456"
 "+61400000020" = "123456"
 "+61400000021" = "123456"
+"+2348012345678" = "123456"
 
 [realtime]
 enabled = true
