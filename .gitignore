@@ -85,6 +85,7 @@ Thumbs.db
 
 # Coverage
 coverage/
+test-results/
 
 # Generated types (uncomment once committed once)
 # packages/db/src/generated.ts

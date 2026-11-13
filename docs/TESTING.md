@@ -2,12 +2,13 @@
 
 ## Layers
 
-| Layer | Where | Needs Supabase? | Run |
-|---|---|---|---|
-| Unit (pure logic) | `packages/domain/src/*.test.ts` | no | `pnpm --filter @openride/domain test` |
-| RLS / security | `packages/testing/src/rls.test.ts` | yes (local stack) | see below |
-| Dispatch simulation | `packages/testing/src/sim/run.ts` | no | `pnpm sim` |
-| Lint / typecheck | all packages | no | `pnpm lint` · `pnpm typecheck` |
+| Layer                             | Where                              | Needs Supabase?   | Run                                   |
+| --------------------------------- | ---------------------------------- | ----------------- | ------------------------------------- |
+| Unit (pure logic)                 | `packages/domain/src/*.test.ts`    | no                | `pnpm --filter @openride/domain test` |
+| Mock simulator browser regression | `scripts/dev-hub.spec.ts`          | no                | `pnpm test:dev-hub`                   |
+| RLS / security                    | `packages/testing/src/rls.test.ts` | yes (local stack) | see below                             |
+| Dispatch simulation               | `packages/testing/src/sim/run.ts`  | no                | `pnpm sim`                            |
+| Lint / typecheck                  | all packages                       | no                | `pnpm lint` · `pnpm typecheck`        |
 
 `pnpm test` runs every package's unit tests via Turborepo. The RLS suite **skips
 gracefully** when Supabase isn't reachable, so `pnpm test` stays green without
@@ -50,6 +51,20 @@ DRIVERS=50 REQUESTS=300 RADIUS_M=8000 pnpm sim
 
 Reports assignment rate, manual-fallback rate, avg attempts per assignment, and
 avg pickup distance.
+
+## Mock simulator browser regression
+
+The Playwright suite launches the development-only mock simulator on a
+temporary local port and exercises it in headless Chromium. Install the browser
+and its system dependencies once with
+`pnpm exec playwright install --with-deps chromium`, then run:
+
+```bash
+pnpm test:dev-hub
+```
+
+These tests keep all actions in the simulator page's memory and do not call
+Supabase or modify real Driver app state.
 
 ## Payment test mode
 
