@@ -38,6 +38,34 @@ jobs:
       - name: Test
         run: pnpm test
 
+  mock-simulator:
+    name: Test · mock simulator browser
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium and system dependencies
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Test domain helpers
+        run: pnpm --filter @openride/domain test
+
+      - name: Test simulator in Chromium
+        run: pnpm test:dev-hub
+
   db-migrations:
     name: DB · migrations apply cleanly
     runs-on: ubuntu-latest

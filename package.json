@@ -16,6 +16,7 @@
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "test:dev-hub": "playwright test --config=scripts/playwright.config.ts",
     "db:start": "supabase start --workdir infra --exclude vector",
     "db:status": "supabase status --workdir infra",
     "db:stop": "supabase stop --workdir infra",
@@ -26,6 +27,7 @@
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@types/node": "^20.19.42",
     "prettier": "^3.8.4",
     "supabase": "2.105.0",
