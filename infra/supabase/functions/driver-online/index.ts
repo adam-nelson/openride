@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { handleCors, error, json } from '../_shared/cors.ts';
 import { HttpError, audit, operatorOf, requireCaller } from '../_shared/auth.ts';
+import { driverDocumentsAreCompliant, vehicleDocumentsAreCompliant } from '../_shared/compliance.ts';
 
 interface Body {
   vehicle_id: string;
@@ -28,6 +29,13 @@ Deno.serve(async (req: Request) => {
     if (d.fatigue_locked_until && new Date(d.fatigue_locked_until) > new Date()) {
       return error('Driver is fatigue-locked', 403, 'fatigue_locked');
     }
+    let compliant: boolean;
+    try {
+      compliant = await driverDocumentsAreCompliant(ctx.serviceClient, ctx.userId);
+    } catch (e) {
+      return error((e as Error).message, 500, 'compliance_check_failed');
+    }
+    if (!compliant) return error('Required approved, unexpired driver documents are missing', 403, 'compliance_incomplete');
 
     const { data: vehicle, error: vErr } = await ctx.serviceClient
       .from('vehicles')
@@ -38,6 +46,13 @@ Deno.serve(async (req: Request) => {
     if (!vehicle || (vehicle as any).status !== 'active') {
       return error('Vehicle not active', 400, 'vehicle_inactive');
     }
+    let vehicleCompliant: boolean;
+    try {
+      vehicleCompliant = await vehicleDocumentsAreCompliant(ctx.serviceClient, body.vehicle_id);
+    } catch (e) {
+      return error((e as Error).message, 500, 'compliance_check_failed');
+    }
+    if (!vehicleCompliant) return error('Required approved, unexpired vehicle documents are missing', 403, 'vehicle_compliance_incomplete');
 
     // Close any open shift first (idempotent)
     await ctx.serviceClient

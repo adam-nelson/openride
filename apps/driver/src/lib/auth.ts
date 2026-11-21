@@ -1,7 +1,10 @@
 import type { Session } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
+import { createPhoneAuthService } from './phone-auth';
 import { supabase } from './supabase';
+
+const phoneAuth = createPhoneAuthService(supabase.auth);
 
 export function useSession(): { session: Session | null; loading: boolean } {
   const [session, setSession] = useState<Session | null>(null);
@@ -9,11 +12,16 @@ export function useSession(): { session: Session | null; loading: boolean } {
 
   useEffect(() => {
     let mounted = true;
-    void supabase.auth.getSession().then(({ data }) => {
-      if (!mounted) return;
-      setSession(data.session);
-      setLoading(false);
-    });
+    void supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (!mounted) return;
+        setSession(data.session);
+        setLoading(false);
+      })
+      .catch(() => {
+        if (mounted) setLoading(false);
+      });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       if (mounted) setSession(s);
     });
@@ -26,19 +34,10 @@ export function useSession(): { session: Session | null; loading: boolean } {
   return { session, loading };
 }
 
-export async function sendOtp(phone: string): Promise<void> {
-  const { error } = await supabase.auth.signInWithOtp({
-    phone,
-    options: { data: { role: 'driver' } },
-  });
-  if (error) throw error;
-}
-
-export async function verifyOtp(phone: string, token: string): Promise<void> {
-  const { error } = await supabase.auth.verifyOtp({ phone, token, type: 'sms' });
-  if (error) throw error;
-}
+export const sendOtp = phoneAuth.sendOtp;
+export const verifyOtp = phoneAuth.verifyOtp;
 
 export async function signOut(): Promise<void> {
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
 }

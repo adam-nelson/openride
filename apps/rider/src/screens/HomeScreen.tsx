@@ -40,36 +40,43 @@ export function HomeScreen({ displayName }: { displayName?: string | null }) {
   const [estimating, setEstimating] = useState(false);
   const [booking, setBooking] = useState(false);
   const searchSeq = useRef(0);
+  const pickupRequestSeq = useRef(0);
+
+  const loadPickupLocation = useCallback(async () => {
+    const request = ++pickupRequestSeq.current;
+    const isCurrentRequest = () => request === pickupRequestSeq.current;
+    setLocating(true);
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (!isCurrentRequest()) return;
+      if (status !== 'granted') {
+        setPickup(null);
+        return;
+      }
+      const pos = await Location.getCurrentPositionAsync({});
+      if (!isCurrentRequest()) return;
+      const label = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+      if (!isCurrentRequest()) return;
+      setPickup({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+        label: label ?? 'Current location',
+      });
+    } catch {
+      // Location lookup failures are shown as unavailable so the rider can retry.
+      if (isCurrentRequest()) setPickup(null);
+    } finally {
+      if (isCurrentRequest()) setLocating(false);
+    }
+  }, []);
 
   // Pickup = current location.
   useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          if (active) setLocating(false);
-          return;
-        }
-        const pos = await Location.getCurrentPositionAsync({});
-        const label = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
-        if (active) {
-          setPickup({
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-            label: label ?? 'Current location',
-          });
-        }
-      } catch {
-        // ignore — rider can still proceed once we have a dropoff + GPS retry
-      } finally {
-        if (active) setLocating(false);
-      }
-    })();
+    void loadPickupLocation();
     return () => {
-      active = false;
+      pickupRequestSeq.current += 1;
     };
-  }, []);
+  }, [loadPickupLocation]);
 
   // Debounced dropoff search.
   useEffect(() => {
@@ -163,7 +170,18 @@ export function HomeScreen({ displayName }: { displayName?: string | null }) {
         {locating ? (
           <ActivityIndicator />
         ) : (
-          <Text style={styles.fieldText}>{pickup?.label ?? 'Location unavailable'}</Text>
+          <>
+            <Text style={styles.fieldText}>{pickup?.label ?? 'Location unavailable'}</Text>
+            {!pickup ? (
+              <Pressable
+                onPress={() => void loadPickupLocation()}
+                accessibilityRole="button"
+                hitSlop={8}
+              >
+                <Text style={styles.link}>Try again</Text>
+              </Pressable>
+            ) : null}
+          </>
         )}
       </View>
 

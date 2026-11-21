@@ -144,6 +144,14 @@ export function HomeScreen({
     }
   }
 
+  async function handleSignOut(): Promise<void> {
+    try {
+      await (onSignOut ? onSignOut() : signOut());
+    } catch (e) {
+      Alert.alert('Could not sign out', (e as Error).message || 'Please try again.');
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'right', 'bottom', 'left']}>
       <View style={styles.header}>
@@ -151,7 +159,7 @@ export function HomeScreen({
           <ZoluLogo size={36} />
           <View>
             <Text style={styles.hi}>{displayName ?? 'Driver'}</Text>
-            <Text style={styles.brandLabel}>ZOLU Driver</Text>
+            <Text style={styles.brandLabel}>ZoluRide Driver</Text>
           </View>
         </View>
         <View style={styles.headerLinks}>
@@ -161,7 +169,7 @@ export function HomeScreen({
           <Pressable onPress={onReport} hitSlop={8}>
             <Text style={styles.link}>Report</Text>
           </Pressable>
-          <Pressable onPress={() => void (onSignOut ? onSignOut() : signOut())} hitSlop={8}>
+          <Pressable onPress={() => void handleSignOut()} hitSlop={8}>
             <Text style={styles.signOut}>Sign out</Text>
           </Pressable>
         </View>
@@ -181,7 +189,7 @@ export function HomeScreen({
           </Text>
         </View>
         <View style={styles.earningsRow}>
-          <Text style={styles.earningLabel}>Today&apos;s ZOLU fee</Text>
+          <Text style={styles.earningLabel}>Today&apos;s ZoluRide fee</Text>
           {grossEarningsKobo === null ? (
             <Text style={styles.earningValue}>Unavailable</Text>
           ) : (
@@ -257,7 +265,7 @@ export function HomeScreen({
       <View style={styles.comparisonCard}>
         <View style={styles.comparisonColumns}>
           <View style={styles.comparisonColumn}>
-            <Text style={styles.zoluLabel}>ZOLU</Text>
+            <Text style={styles.zoluLabel}>ZoluRide</Text>
             <Text style={styles.comparisonCaption}>Net</Text>
             <Text style={styles.zoluFare}>{comparison === null ? 'Unavailable' : formatKobo(comparison.zoluNetKobo)}</Text>
           </View>

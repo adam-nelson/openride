@@ -24,7 +24,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="min-h-screen flex">
       <aside className="w-56 bg-white border-r p-4 flex flex-col">
-        <div className="text-lg font-semibold text-brand mb-6">OpenRide</div>
+        <div className="text-lg font-semibold text-brand mb-6">ZoluRide</div>
         <nav className="flex flex-col gap-1">
           {nav.map((n) => (
             <Link

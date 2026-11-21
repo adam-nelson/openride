@@ -14,7 +14,6 @@ import { api } from './src/lib/api';
 import { useSession } from './src/lib/auth';
 import {
   REQUIRED_DRIVER_DOCUMENTS,
-  mockAdminVerifyPendingDocuments,
   submitDriverDocuments,
   useDriverState,
   type DriverDocument,
@@ -24,6 +23,7 @@ import {
   type RequiredDocumentName,
   type Vehicle,
 } from './src/lib/driver-state';
+import { simulatePreviewDocumentVerification } from './src/lib/preview-documents';
 
 function Centered({ children }: { children: React.ReactNode }) {
   return (
@@ -65,11 +65,6 @@ function SignedIn({ session }: { session: Session }) {
               REQUIRED_DRIVER_DOCUMENTS.some((document) => document.type === type),
           );
           await submitDriverDocuments(driverId, requiredTypes);
-          await state.refresh();
-          setShowDocuments(false);
-        }}
-        onMockAdminVerify={async () => {
-          await mockAdminVerifyPendingDocuments(driverId);
           await state.refresh();
           setShowDocuments(false);
         }}
@@ -199,22 +194,8 @@ function DevBypassHome({ onExit }: { onExit: () => void }) {
             ),
           );
         }}
-        onMockAdminVerify={async () => {
-          setDriverDocuments((documents) =>
-            documents.map((document) =>
-              document.renewalSubmitted
-                ? {
-                    ...document,
-                    status: 'verified',
-                    uploaded: true,
-                    renewalSubmitted: false,
-                    expiringSoon: false,
-                    expiresOn: expiryDate(12),
-                    expiryLabel: 'expires in 12 months',
-                  }
-                : document,
-            ),
-          );
+        onPreviewVerify={async () => {
+          setDriverDocuments((documents) => simulatePreviewDocumentVerification(documents, expiryDate(12)));
         }}
       />
     );

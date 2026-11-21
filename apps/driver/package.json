@@ -10,6 +10,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build": "echo 'Use EAS for production builds: eas build --platform <ios|android>'",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
     "clean": "rm -rf .expo dist .turbo *.tsbuildinfo"
@@ -43,6 +44,7 @@
     "@openride/config": "workspace:*",
     "@types/react": "~19.2.0",
     "babel-preset-expo": "~56.0.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^2.0.5"
   }
 }

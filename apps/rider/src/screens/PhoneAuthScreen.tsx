@@ -35,7 +35,7 @@ export function PhoneAuthScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>OpenRide</Text>
+      <Text style={styles.title}>ZoluRide</Text>
       <Text style={styles.subtitle}>
         {stage === 'phone' ? 'Enter your phone number' : `Code sent to ${phone}`}
       </Text>

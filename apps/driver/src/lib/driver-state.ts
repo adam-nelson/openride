@@ -244,46 +244,14 @@ export async function submitDriverDocuments(driverId: string, uploadedTypes: Req
   const documents = REQUIRED_DRIVER_DOCUMENTS.filter(({ type }) => uploadedTypes.includes(type));
 
   for (const { docType } of documents) {
-    const { data: existing, error: lookupError } = await supabase
-      .from('driver_documents')
-      .select('id')
-      .eq('driver_id', driverId)
-      .eq('doc_type', docType)
-      .neq('status', 'approved')
-      .order('updated_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (lookupError) throw lookupError;
-
-    const documentData = {
-      storage_path: `mock/${driverId}/${docType}/${Date.now()}`,
-      issued_on: null,
-      expires_on: null,
-      status: 'pending' as const,
-      reviewer_id: null,
-      review_notes: null,
-    };
-    const result = existing
-      ? await supabase.from('driver_documents').update(documentData).eq('id', existing.id)
-      : await supabase.from('driver_documents').insert({ driver_id: driverId, doc_type: docType, ...documentData });
-    if (result.error) throw result.error;
+    const { error } = await supabase.rpc('submit_driver_document', {
+      p_doc_type: docType,
+      p_storage_path: `mock/${driverId}/${docType}/${Date.now()}`,
+      p_issued_on: null,
+      p_expires_on: null,
+    });
+    if (error) throw error;
   }
-}
-
-export async function mockAdminVerifyPendingDocuments(driverId: string): Promise<void> {
-  const { data, error: authError } = await supabase.auth.getUser();
-  if (authError) throw authError;
-  if (!data.user || data.user.id !== driverId) {
-    throw new Error('Mock Admin Verify requires a signed-in driver session.');
-  }
-
-  const { error } = await supabase
-    .from('driver_documents')
-    .update({ status: 'approved' })
-    .eq('driver_id', driverId)
-    .eq('status', 'pending')
-    .in('doc_type', REQUIRED_DRIVER_DOCUMENTS.map(({ docType }) => docType));
-  if (error) throw error;
 }
 
 /** Vehicles this driver can operate (their default vehicle(s)). */

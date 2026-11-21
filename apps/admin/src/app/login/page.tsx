@@ -29,7 +29,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
       <form onSubmit={onSubmit} className="w-full max-w-sm bg-white border rounded-lg p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-brand mb-4">OpenRide Admin</h1>
+        <h1 className="text-2xl font-semibold text-brand mb-4">ZoluRide Admin</h1>
         <label className="block mb-3">
           <span className="block text-sm text-gray-600 mb-1">Email</span>
           <input

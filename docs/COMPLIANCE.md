@@ -1,10 +1,10 @@
 # Compliance
 
-OpenRide is designed to **record** the data a ride-booking operator needs to demonstrate compliance. It does not absolve the operator of statutory obligations.
+ZoluRide is designed to **record** the data a ride-booking operator needs to demonstrate compliance. It does not absolve the operator of statutory obligations.
 
 ## Australia-generic baseline (v1)
 
-OpenRide ships with a neutral schema covering the obligations common to NSW Point to Point, Victoria CPV, Queensland PCS, and WA OPT regulators:
+ZoluRide ships with a neutral schema covering the obligations common to NSW Point to Point, Victoria CPV, Queensland PCS, and WA OPT regulators:
 
 | Concern | Modelled as |
 |---|---|
@@ -40,7 +40,7 @@ State-specific document validity rules live in the `compliance_rules` config tab
 
 Configurable via `app_config` keys `retention.*`.
 
-## What OpenRide does **not** do
+## What ZoluRide does **not** do
 
 - File regulator returns.
 - Issue driver authorities or vehicle inspections — only records them.

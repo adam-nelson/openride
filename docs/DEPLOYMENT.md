@@ -1,6 +1,6 @@
 # Deployment
 
-OpenRide is a Supabase backend + a Next.js admin + two Expo apps. This is the
+ZoluRide is a Supabase backend + a Next.js admin + two Expo apps. This is the
 MVP deploy path; harden per your operator's security requirements.
 
 ## 1. Supabase (backend)
