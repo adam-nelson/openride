@@ -87,6 +87,33 @@ jobs:
         env:
           PGPASSWORD: postgres
         run: |
+          psql -h localhost -U postgres -d openride_ci -v ON_ERROR_STOP=1 <<'SQL'
+          do $$
+          begin
+            if not exists (select 1 from pg_roles where rolname = 'anon') then create role anon nologin; end if;
+            if not exists (select 1 from pg_roles where rolname = 'authenticated') then create role authenticated nologin; end if;
+            if not exists (select 1 from pg_roles where rolname = 'service_role') then create role service_role nologin bypassrls; end if;
+          end $$;
+          create schema if not exists auth;
+          create table if not exists auth.users (
+            id uuid primary key,
+            phone text,
+            email text,
+            raw_user_meta_data jsonb
+          );
+          create or replace function auth.uid() returns uuid language sql stable as $$
+            select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid;
+          $$;
+          create or replace function auth.role() returns text language sql stable as $$
+            select coalesce(nullif(current_setting('request.jwt.claim.role', true), ''), current_user::text);
+          $$;
+          do $$
+          begin
+            if not exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+              create publication supabase_realtime;
+            end if;
+          end $$;
+          SQL
           for f in infra/supabase/migrations/*.sql; do
             echo "Applying $f"
             psql -h localhost -U postgres -d openride_ci -v ON_ERROR_STOP=1 -f "$f"
@@ -119,6 +146,7 @@ jobs:
         run: |
           export SUPABASE_URL="$(supabase status --workdir infra -o env | grep '^API_URL' | cut -d= -f2 | tr -d '\"')"
           export SUPABASE_ANON_KEY="$(supabase status --workdir infra -o env | grep '^ANON_KEY' | cut -d= -f2 | tr -d '\"')"
+          export SUPABASE_SERVICE_ROLE_KEY="$(supabase status --workdir infra -o env | grep '^SERVICE_ROLE_KEY' | cut -d= -f2 | tr -d '\"')"
           pnpm --filter @openride/testing test
 
       - name: Stop Supabase

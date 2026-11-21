@@ -38,11 +38,11 @@ let originalLocation: Record<string, unknown> | null = null;
 let locationWasPresent = false;
 let testVehicleOriginalStatus: string | null = null;
 let shiftId: string | null = null;
-let createdBookingIds: string[] = [];
-let createdTripIds: string[] = [];
+const createdBookingIds: string[] = [];
+const createdTripIds: string[] = [];
 let setupStarted = false;
 
-async function jsonRequest(url: string, init?: RequestInit): Promise<{ status: number; body: any }> {
+async function jsonRequest(url: string, init?: RequestInit): Promise<{ status: number; body: unknown }> {
   const response = await fetch(url, init);
   return { status: response.status, body: await response.json() };
 }
@@ -51,7 +51,7 @@ async function postFunction(
   name: string,
   body: object,
   accessToken?: string,
-): Promise<{ status: number; body: any }> {
+): Promise<{ status: number; body: unknown }> {
   return jsonRequest(`${FUNCTIONS_URL}/${name}`, {
     method: 'POST',
     headers: {
